@@ -100,39 +100,21 @@ span:hover {
   background-color: rgb(92, 212, 212);
 }
 
-/* Tooltip text */
-td .tooltiptext {
-  visibility: hidden;
-  width: 120px;
-  background-color: black;
-  color: #fff;
-  text-align: center;
-  padding: 5px 0;
-  border-radius: 6px;
- 
-  /* Position the tooltip text - see examples below! */
+.tooltiptext {
+  display: none;
+  margin-left: 28px; /* moves the tooltip to the right */
+  margin-top: 15px; /* moves it down */
   position: absolute;
-  z-index: 1;
+  z-index: 1000;
 
-  
-}
-
-
-/* Tooltip arrow */
-td .tooltiptext::after {
-  content: "";
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  margin-left: -5px;
-  border-width: 5px;
-  border-style: solid;
-  border-color: #555 transparent transparent transparent;
 }
 
 
 /* Show the tooltip text when you mouse over the tooltip container */
 td:hover .tooltiptext {
-  visibility: visible;
+  display: block;
   transition: opacity 0.3s;
+  background: white;
+  border: 1px solid #777777;
+  padding: 5px;
 }

@@ -66,11 +66,11 @@ export const Statistics = () => {
                     <tr key={dr+"xyz"+indexx}>
                         <th>{dr}</th>
                         {clinicArray.map((clinic, index) =>(
-                            <td style={{"minWidth":"50px", "height": "40px"}} key={clinic+"xy"+index} >
+                            <td style={{"minWidth":"50px", "height": "40px"}} key={clinic+"xy"+index}  className="selectBox">
                                 {data.filter(entry => entry.clinic ==clinic)
                                     .filter(entry=>entry.doctor==dr)
                                     .reduce((acc, curr) => {return acc+curr.weight}, 0)}
-                                <span className="tooltiptext">hello</span>
+                                <span className="tooltiptext">{clinic} {dr}</span>
                              </td>
                         ))}
                         <td style={{"width":"10%", "borderWidth":"1px 1px 1px 3px","borderStyle":"ridge"}}>
