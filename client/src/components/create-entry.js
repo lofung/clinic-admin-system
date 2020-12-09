@@ -30,8 +30,8 @@ export const CreateEntry = () => {
             const response = await fetch("/api/v1/");
             const jsonData = await response.json();
             console.log(jsonData);
-            setTitles(jsonData.data.fields);
-            setEntries(jsonData.data.rows);
+            setTitles(jsonData.fields);
+            setEntries(jsonData.rows);
             //console.log(titles);
             //console.log(entries);
         } catch (err) {
@@ -91,6 +91,16 @@ export const CreateEntry = () => {
         }
     }
 
+    const addDateByOne = (date) => {
+        //very string behaviour by javascript
+        //one day off and i do not even know why
+        let answer = date.split("T")[0];
+        answer = new Date(answer);
+        answer.setDate(answer.getDate()+1);
+        //console.log(answer)
+        return answer.toISOString().split("T")[0]
+    }
+
     const getDoctorList = async () => {
         try {
             const response = await fetch("/api/v1/doctorlist");
@@ -130,6 +140,7 @@ export const CreateEntry = () => {
 
     return (
         <div>
+            {/* JSON.stringify(entries) */}
             <form onSubmit={onSubmit}>
                 <div>
                     <label>Doctor　</label>  
@@ -163,7 +174,7 @@ export const CreateEntry = () => {
                 <div>
                 {/*JSON.stringify(doctorList)*/}<br />
                 {/*JSON.stringify(clinicList)*/}<br />
-                {/* date */}<br />
+                {date}<br />
                 {/* ampm */}<br />
                 {error}<br />
                 </div>
@@ -184,7 +195,7 @@ export const CreateEntry = () => {
                             <td key={`${titles[1].name}x1${idx}`} style={{padding: "15px"}}>{entry[`${titles[1].name}`]}</td>
                             <td key={`${titles[2].name}x2${idx}`} style={{padding: "15px"}}>{entry[`${titles[2].name}`]}</td>
                             <td key={`${titles[3].name}x3${idx}`} style={{padding: "15px"}}>{entry[`${titles[3].name}`]===true?"am":entry[`${titles[3].name}`]===false?"pm":""}</td>
-                            <td key={`${titles[4].name}x4${idx}`} style={{padding: "15px"}}>{entry[`${titles[4].name}`].split("T", 1)}</td>
+                            <td key={`${titles[4].name}x4${idx}`} style={{padding: "15px"}}>{addDateByOne(entry[`${titles[4].name}`])}</td>
                             <td key={`${titles[5].name}x5${idx}`} style={{padding: "15px"}}>{entry[`${titles[5].name}`]}</td>
                             <td key={`x4${idx}`} style={{padding: "15px"}} onClick={() => editEntry(idx)}><button>EDIT</button></td>
                             <td key={`x47${idx}`} style={{padding: "15px"}} onClick={() => deleteEntry(entry.event_id)}><button>x</button></td>

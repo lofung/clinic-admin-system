@@ -7,13 +7,42 @@ const pool = require("../config/elephantsql");
 
 exports.getEntries = async (req, res, next) => {
     try {
-        const data = await pool.query("SELECT * FROM clinic_time_table");
+        let query = null;
+        let start = null;
+        let end = null;
+        console.log(req.query)
+        if (req.query.query) { query = req.query.query}
+        if (req.query.start) { start = req.query.start}
+        if (req.query.end) { end = req.query.end}
+        console.log({ start, end, query });
 
-        return res.status(200).json({
-            success: true,
-            count: data.length,
-            data: data
-        })
+        if (start && end){
+            start = `${start}-01`;
+            end = new Date(end.split("-")[0], end.split("-")[1], 1).toISOString().split("T")[0];
+        }
+
+        if (query){
+            //console.log("triggered if query")
+            start = `${query}-01`;
+            //console.log(query);
+            end = new Date(query.split("-")[0], query.split("-")[1], 1).toISOString().split("T")[0];
+            //toISOString() has weird behaviour. the current setting will give last date of month.
+            //console.log(end)
+        }
+
+        console.log({ start, end, query });
+
+        let result;
+        //console.log({ start, end, query });
+        if (start && end) {
+            //console.log("triggered to run start && end")
+            result = await pool.query("SELECT *, date::text FROM clinic_time_table WHERE date BETWEEN $1 AND $2", [start.toString(), end.toString()]);
+        } else {
+            //console.log("full query")
+            result = await pool.query("SELECT * FROM clinic_time_table");
+        }
+        //console.log(result.rows);
+        res.json(result);
     } catch (err) { 
         return res.status(500).json({
             success: false,
@@ -109,6 +138,7 @@ exports.deleteEntry = async (req, res, next) => {
 exports.getDoctorList = async (req, res, next) => {
     try {
         const doctorList = await pool.query("SELECT * FROM login_table");
+        //console.log(doctorList)
         res.json(doctorList);
     } catch (err) {
         return res.status(500).json({
