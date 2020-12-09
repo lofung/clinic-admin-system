@@ -1,0 +1,138 @@
+body {
+  background-color:#ffffcc;
+}
+
+.App {
+  text-align: center;
+
+}
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 40vmin;
+  pointer-events: none;
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+table, th, td {
+  border: 1px solid black;
+}
+
+table {
+  empty-cells: show;
+  border-collapse: collapse;   
+}
+
+#statTable td, #statTable th {
+  padding: 5px;
+}
+
+.delete-btn {
+  /* https://stackoverflow.com/questions/10019797/pure-css-close-button */
+  cursor: pointer;
+  box-sizing:border-box;
+  width:20px;
+  height:20px;
+  border-width:3px;
+  border-style: solid;
+  border-color:red;
+  border-radius:100%;
+  background: -webkit-linear-gradient(-45deg, transparent 0%, transparent 46%, white 46%,  white 56%,transparent 56%, transparent 100%), -webkit-linear-gradient(45deg, transparent 0%, transparent 46%, white 46%,  white 56%,transparent 56%, transparent 100%);
+  background-color:red;
+  transition: all 0.3s ease;
+  position: absolute;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+span:hover .delete-btn {
+  opacity: 1;
+}
+
+.edit-btn {
+  /* https://stackoverflow.com/questions/10019797/pure-css-close-button */
+  cursor: pointer;
+  box-sizing:border-box;
+  width:20px;
+  height:20px;
+  border-width:3px;
+  border-style: solid;
+  border-color: green;
+  border-radius:100%;
+  background: -webkit-linear-gradient(transparent 0%, transparent 46%, white 46%,  white 56%,transparent 56%, transparent 100%), -webkit-linear-gradient(180deg, transparent 0%, transparent 46%, white 46%,  white 56%,transparent 56%, transparent 100%);
+  background-color:green;
+  transition: all 0.3s ease;
+  position: absolute;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+th:hover .edit-btn,
+span:hover .edit-btn {
+  opacity: 1;
+}
+
+.selectBox:hover,
+span:hover {
+  background-color: rgb(92, 212, 212);
+}
+
+/* Tooltip text */
+td .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 6px;
+ 
+  /* Position the tooltip text - see examples below! */
+  position: absolute;
+  z-index: 1;
+
+  
+}
+
+
+/* Tooltip arrow */
+td .tooltiptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+
+/* Show the tooltip text when you mouse over the tooltip container */
+td:hover .tooltiptext {
+  visibility: visible;
+  transition: opacity 0.3s;
+}
