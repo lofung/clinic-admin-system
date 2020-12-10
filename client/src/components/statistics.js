@@ -22,6 +22,11 @@ export const Statistics = () => {
         }
     }
 
+    function getWeekDate (date) {
+        let days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        return days[date.getDay()];
+    }
+
     useEffect(() =>{
         loadData();
         // eslint-disable-next-line
@@ -70,7 +75,12 @@ export const Statistics = () => {
                                 {data.filter(entry => entry.clinic ==clinic)
                                     .filter(entry=>entry.doctor==dr)
                                     .reduce((acc, curr) => {return acc+curr.weight}, 0)}
-                                <span className="tooltiptext">{clinic} {dr}</span>
+                                <span className="tooltiptext">
+                                        {clinic} {dr}
+                                        {data.filter(entry => entry.clinic ==clinic)
+                                        .filter(entry=>entry.doctor==dr)
+                                        .map(entry => <div>{entry.date} {getWeekDate(new Date(entry.date))}</div> )}
+                                </span>
                              </td>
                         ))}
                         <td style={{"width":"10%", "borderWidth":"1px 1px 1px 3px","borderStyle":"ridge"}}>
