@@ -12,6 +12,21 @@ export const DisplayTimeTable = () => {
     ])
     const [data, setData] = useState([]);
 
+    async function deleteEntry (id) {
+        //get id from the object, and then delete things from it
+        console.log("we are deleting this entry! " + id);
+    }
+
+    async function editEntry (obj) {
+        //get id from the object, and then recall everything in the form
+        console.log("we are editing this entry! " + JSON.stringify(obj));
+        if (obj.id === undefined){
+            obj.id = "CREATE NEW ENTRY";
+            console.log("creating entry because no id!!!")
+        }
+
+    }
+
     async function changeMonth (e) {
         //console.log(e.target.value);
         //console.log(new Date(e.target.value+"-01").getDay());
@@ -68,7 +83,7 @@ export const DisplayTimeTable = () => {
                 </input>
                 <button onClick={()=>window.print()}>Print</button>
                 <h3 align="center">Roster</h3>
-                {/*JSON.stringify(data)*/}
+                {JSON.stringify(data)}
                 {/*Array.isArray(data)?"true":"false"*/}
                 <br />
                 {/* load warning signal for firefix, since does not have feature for monthy selector */}
@@ -98,7 +113,7 @@ export const DisplayTimeTable = () => {
                                         <tbody style={{border:'1px solid #d3d3d3'}}>
                                             <tr>
                                                 <th className="selectBox">
-                                                    am<button className="edit-btn" />
+                                                    am<button onClick={() => editEntry({day, "ampm": "am"})}  className="edit-btn" />
                                                 </th>
                                             </tr>
                                             {}
@@ -108,20 +123,20 @@ export const DisplayTimeTable = () => {
                                                 .filter(entry => entry.date.split("-")[2] == day)
                                                 .map(entry => entry.clinic))]
                                                 .map((clinic, index) =>
-                                                    <tr><td key={clinic + week + idx + index + "am"} style={{ minHeight: "50px", overflow: "hidden" }}><span>{clinic}<button className="edit-btn" /></span><br/>
+                                                    <tr><td key={clinic + week + idx + index + "am"} style={{ minHeight: "50px", overflow: "hidden" }}><span>{clinic}<button className="edit-btn"  onClick={() => editEntry({day, "ampm": "am", clinic})}  /></span><br/>
                                                         {
                                                             data.filter(element => element.am === true)
                                                                 .filter(element => element.date.split("-")[2] == day)
                                                                 .filter(element => element.clinic == clinic)
                                                                 .map(element =>
-                                                                    <span>{element.doctor}, <button className="edit-btn" /><button className="delete-btn right-btn" /></span>)
+                                                                    <span>{element.doctor}, <button onClick={() => editEntry({id: element.event_id})} className="edit-btn" /><button onClick={() => deleteEntry(element.event_id)} className="delete-btn right-btn" /></span>)
                                                         }
                                                     </td></tr>
                                                 ):
                                                 <tr><td style={{"height": "50px"}}></td></tr>}
                                             <tr>
                                                 <th className="selectBox">
-                                                    pm<button className="edit-btn" />
+                                                    pm<button onClick={() => editEntry({day, "ampm": "pm"})} className="edit-btn" />
                                                 </th>
                                             </tr>
                                             {data.filter(entry => entry.am === true)
@@ -130,13 +145,13 @@ export const DisplayTimeTable = () => {
                                                 .filter(entry => entry.date.split("-")[2] == day)
                                                 .map(entry => entry.clinic))]
                                                 .map((clinic, index) =>
-                                                    <tr><td key={clinic + week + idx + index + "pm"}><span>{clinic}<button className="edit-btn" /></span><br/>
+                                                    <tr><td key={clinic + week + idx + index + "pm"}><span>{clinic}<button onClick={() => editEntry({day, "ampm": "pm", clinic})}  className="edit-btn" /></span><br/>
                                                         {
                                                             data.filter(element => element.am === false)
                                                                 .filter(element => element.date.split("-")[2] == day)
                                                                 .filter(element => element.clinic == clinic)
                                                                 .map(element =>
-                                                                    <span>{element.doctor}<button className="delete-btn" />, </span>)
+                                                                    <span>{element.doctor}, <button onClick={() => editEntry({id: element.event_id})} className="edit-btn" /><button onClick={() => deleteEntry(element.event_id)} className="delete-btn right-btn" /></span>)
                                                         }
                                                     </td></tr>
                                                 ):
