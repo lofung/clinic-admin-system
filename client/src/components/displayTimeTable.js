@@ -114,7 +114,7 @@ export const DisplayTimeTable = () => {
                                                                 .filter(element => element.date.split("-")[2] == day)
                                                                 .filter(element => element.clinic == clinic)
                                                                 .map(element =>
-                                                                    <span>{element.doctor}<button className="delete-btn" />, </span>)
+                                                                    <span>{element.doctor}, <button className="edit-btn" /><button className="delete-btn right-btn" /></span>)
                                                         }
                                                     </td></tr>
                                                 ):

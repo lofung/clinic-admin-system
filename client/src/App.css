@@ -90,6 +90,11 @@ span:hover .delete-btn {
   transition: opacity 0.3s ease;
 }
 
+/* move the delete bottom to roughtly the right position wtf!!!!*/
+.right-btn {
+  transform: translate(20px, 0px);
+}
+
 th:hover .edit-btn,
 span:hover .edit-btn {
   opacity: 1;
