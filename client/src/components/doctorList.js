@@ -149,7 +149,7 @@ export const DoctorList = () => {
                             <td key={`${titles[2].name}x2${idx}`} style={{padding: "15px"}}>{entry[`${titles[2].name}`]}</td>
                             <td key={`${titles[3].name}x3${idx}`} style={{padding: "15px"}}>{entry[`${titles[3].name}`]}</td>
                             {/*<td key={`x4${idx}`} style={{padding: "15px"}} onClick={() => editDoctor(idx)}><button>EDIT</button></td>*/}
-                            <td key={`x47${idx}`} style={{padding: "15px"}} onClick={() => deleteDoctor(entry.login_id)}><button>x</button></td>
+                            <td key={`x47${idx}`} style={{padding: "15px"}}>{entry.login_id===1?"":<button onClick={() => deleteDoctor(entry.login_id)}>x</button>}</td>
                         </tr>
                     )}
                 </tbody>

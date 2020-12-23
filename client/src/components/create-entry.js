@@ -247,14 +247,15 @@ export const CreateEntry = () => {
                 </div>
                     <button>Submit</button>
                 <div>
+                {id==="CREATE_NEW_ENTRY"?"":<button onClick={() => setId("CREATE_NEW_ENTRY") }>Switch to entry creation</button>}
                 {/*JSON.stringify(doctorList)*/}<br />
                 {/*JSON.stringify(clinicList)*/}<br />
-                {date}<br />
+                {/*date*/}<br />
                 {/* ampm */}<br />
-                {error}<br />
+                {/*error*/}<br />
                 </div>
             </form>
-            <button onClick={() => setId("CREATE_NEW_ENTRY") }>Switch to entry creation</button>
+
             
             <table>
                 <thead>
