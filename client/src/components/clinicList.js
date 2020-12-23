@@ -177,7 +177,7 @@ export const ClinicList = () => {
                             <td key={`${titles[1].name}x1${idx}`} style={{padding: "15px"}}>{entry[`${titles[1].name}`]}</td>
                             <td key={`${titles[2].name}x2${idx}`} style={{padding: "15px"}}>{entry[`${titles[2].name}`]===true?"am":entry[`${titles[2].name}`]===false?"pm":""}</td>
                             <td key={`${titles[3].name}x3${idx}`} style={{padding: "15px"}}>{entry[`${titles[3].name}`]}</td>
-                            <td key={`${titles[3].name}edit${idx}`} style={{padding: "15px"}} onClick={() => editClinic(idx)}><button>EDIT</button></td>
+                            {/*<td key={`${titles[3].name}edit${idx}`} style={{padding: "15px"}} onClick={() => editClinic(idx)}><button>EDIT</button></td>*/}
                             <td key={`${titles[3].name}gx4${idx}`} style={{padding: "15px"}} onClick={() => deleteClinic(entry.clinic_id)}><button>x</button></td>
                         </tr>
                     )}

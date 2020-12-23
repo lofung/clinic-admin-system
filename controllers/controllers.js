@@ -85,22 +85,64 @@ exports.addEntry = async (req, res, next) => {
 }
 
 exports.editEntry = async (req, res, next) => {
-    try {
-        console.log("HELLO WORLD edit doctor")
-        const { id } = req.params;
-        console.log(req.body)
-        const { regName, displayName, password } = req.body;        
-        const deleteClinic = await pool.query("UPDATE clinic_time_table SET (login_name, doc_name, password) = ($2, $3, $4) WHERE login_id=$1", [ id, regName, displayName, password ])
-        return res.status(201).json({
-            success: true,
-            message: { id, regName, displayName, password }
-        })
-    } catch (err) {
-        return res.status(500).json({
-            success: false,
-            error: "Server Error"
-        });
-    }
+    //const response = await fetch(`/event/${data.event_id}`, {
+    //body: JSON.stringify({ "id": data.entry_id, doctor, clinic, date, am, weight })
+    //console.log("HELLO WORLD edit entry")
+    const { id, doctor, clinic, date, am, weight } = req.body;
+    console.log("sent data into backend is " + id + " " + doctor + " " + clinic + " " + date + " " + am + " " + weight);
+    if (id =="CREATE_NEW_ENTRY") {
+        console.log("ID is create new entry, now create new entry");
+        try {
+            console.log("new entry is created")
+            const entry = await pool.query("INSERT INTO clinic_time_table (clinic, doctor, am, date, weight) VALUES ($1, $2, $3, $4, $5)",
+            [clinic, doctor, am, date, weight]);
+        
+            return res.status(201).json({
+                success: true,
+                data: [clinic, doctor, am, date, weight]
+            })
+        } catch (err) {
+            if(err.name === "ValidationError"){
+                const messages = Object.values(err.errors).map(val => val.message);
+                return res.status(400).json({
+                    success: false,
+                    error: messages
+                })
+            } else {
+                return res.status(500).json({
+                    success: false,
+                    error: "Server Error, \"else\" in controller"
+                });
+            }
+        }
+    } else { //THIS IS THE REAL UPDATE PART
+        try {
+            console.log("new entry is updated")
+            console.log(req.body)
+            const { id, doctor, clinic, date, am, weight } = req.body;
+            const entry = await pool.query("UPDATE clinic_time_table SET (clinic, doctor, am, date, weight) = ($1, $2, $3, $4, $5) WHERE (event_id) = ($6)",
+            [clinic, doctor, am, date, weight, id]);
+            //id is at the END!!!!!!!! care!!!!!!!!
+        
+            return res.status(201).json({
+                success: true,
+                data: {clinic, doctor, am, date, weight, id, weight}
+            })
+        } catch (err) {
+            if(err.name === "ValidationError"){
+                const messages = Object.values(err.errors).map(val => val.message);
+                return res.status(400).json({
+                    success: false,
+                    error: messages
+                })
+            } else {
+                return res.status(500).json({
+                    success: false,
+                    error: "Server Error, \"else\" in controller"
+                });
+            }
+        }
+    }     
 }
 
 //@DESC     Delete entry

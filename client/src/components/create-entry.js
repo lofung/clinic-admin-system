@@ -8,20 +8,25 @@ export const CreateEntry = () => {
     const [clinicList, setClinicList] = useState([]);
     const [titles, setTitles] = useState([]);
     const [entries, setEntries] = useState([]);
+    const [id, setId] = useState("CREATE_NEW_ENTRY");
     const [doctor, setDoctor] = useState("");
     const [clinic, setClinic] = useState("");
     const [date, setDate] = useState("");
     const [ampm, setAmpm] = useState("");
+    const [weight, setWeight] = useState(1);
     const [error, setError] = useState("");
     const onSubmit = (e) => {
         e.preventDefault();
         const newEntry = {
+            id,
             doctor,
             clinic,
             date,
-            am: ampm=="am"?true:false
+            am: ampm=="am"?true:false,
+            weight
         }
-        addEntries(newEntry);
+        if (id==="CREATE_NEW_ENTRY") {addEntries(newEntry)}
+        else {goToEditEntry(newEntry)};
         return 0;
     }
 
@@ -65,6 +70,7 @@ export const CreateEntry = () => {
             setError("SUCCESS")
             //1:03:37 EXPRESS API
             getEventList();
+            closeWindow();
         } catch (err) {
             console.log(err.response.data.error);
             console.log("SEND ERROR");
@@ -72,8 +78,59 @@ export const CreateEntry = () => {
         }
     }
 
-    const editEntry = async (e) => {
-        console.log("hello edit doctor did not write yet")
+    const goToEditEntry = () => {
+        //e.preventDefault(); cannot prevent default!!
+        console.log("ampm is " + ampm)
+        if (ampm == "am") {var am = true}
+        else if (ampm == "pm") {var am = false}
+        else {setError("ampm value is invalid");return 1;}
+        console.log("data here is " + { id, doctor, clinic, date, am, weight})
+        //alert(id)
+        if (id==undefined) { setId("CREATE_NEW_ENTRY")}
+        if (weight==undefined || weight=="") { setWeight(1) }
+        const newEntry = {
+            id,
+            doctor,
+            clinic,
+            date,
+            am,
+            weight
+        }
+        console.log("new entry is " + JSON.stringify(newEntry))
+        onSubmitEdit(newEntry);
+        return 0;
+    }
+    
+    const onSubmitEdit = async (entry) => {
+        //const { id } = req.params;
+        //console.log(req.body)
+        //const { regName, displayName, password } = req.body;
+        console.log("on submit edit")
+
+        try {
+            const response = await fetch(`/api/v1/event/${id}`, {
+                method: "PUT",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify(entry)
+            });
+            getEventList();
+            closeWindow();
+            console.log(response);
+            //clearForm(); what is this????
+        } catch (err) {
+            console.error(err.message);
+        }
+    }
+
+    async function editEntry(id) {
+        setId(id);
+        setDoctor(entries[id]["doctor"]);
+        console.log(entries[id]["doctor"])
+        setClinic(entries[id]["clinic"]);
+        setDate(entries[id]["date"].split("T")[0]);
+        setWeight(entries[id]["weight"])
+        if (entries[id]["am"] == true) { setAmpm("am"); document.editForm.ampm.value = "am"}
+        if (entries[id]["am"] == false) { setAmpm("pm"); document.editForm.ampm.value = "pm"}
     }
 
     const deleteEntry = async(id) => {
@@ -130,6 +187,16 @@ export const CreateEntry = () => {
         }
     }
 
+    const closeWindow = () => {
+        setDoctor("");
+        setClinic("");
+        setDate("");
+        setAmpm("");
+        setError("");
+        setWeight("");
+        setId("");
+    }
+
     useEffect(() => {
         getDoctorList();
         getClinicList();
@@ -140,12 +207,16 @@ export const CreateEntry = () => {
 
     return (
         <div>
-            {/* JSON.stringify(entries) */}
-            <form onSubmit={onSubmit}>
+            {JSON.stringify(entries)}
+            <form name="editForm" onSubmit={onSubmit}>
                 <div>
-                    <label>Doctor　</label>  
-                    <select value={doctor} onChange={(e) => setDoctor(e.target.value)} required>
-                        <option selected="true" disabled="disabled" value="">Select Doctor</option>
+                    <div>
+                        <label>Entry ID　</label>
+                        <input id="idSelect" disabled value={id}></input>
+                    </div>
+                    <label>Doctor　{doctor}</label>  
+                    <select id="chooseDoctor" value={doctor} onChange={(e) => setDoctor(e.target.value)} required>
+                        <option id="disabledDoctor" selected="true" disabled="disabled" value="">Select Doctor</option>
                         {doctorList.map((data, idx ) => (
                             <option key={`${data}ak47${idx}`} value={data}>{data}</option>
                         ))}
@@ -166,9 +237,13 @@ export const CreateEntry = () => {
                 </div>
                 <div>
                     <label>　AM　</label>  
-                    <input type="radio" name="ampm" value="am" onChange={() => setAmpm("am")}></input>
+                    <input id="am" type="radio" name="ampm" value="am" onChange={() => setAmpm("am")}></input>
                     <label>　PM　</label>  
-                    <input type="radio" name="ampm" value="pm" onChange={() => setAmpm("pm")}></input>
+                    <input id="pm" type="radio" name="ampm" value="pm" onChange={() => setAmpm("pm")}></input>
+                </div>
+                <div>
+                    <label>Weight　</label>
+                    <input type="number" step="0.01" id="weightSelect" value={weight} onChange={(e) => setWeight(e.target.value)}></input>
                 </div>
                     <button>Submit</button>
                 <div>
@@ -179,6 +254,7 @@ export const CreateEntry = () => {
                 {error}<br />
                 </div>
             </form>
+            <button onClick={() => setId("CREATE_NEW_ENTRY") }>Switch to entry creation</button>
             
             <table>
                 <thead>
@@ -197,7 +273,7 @@ export const CreateEntry = () => {
                             <td key={`${titles[3].name}x3${idx}`} style={{padding: "15px"}}>{entry[`${titles[3].name}`]===true?"am":entry[`${titles[3].name}`]===false?"pm":""}</td>
                             <td key={`${titles[4].name}x4${idx}`} style={{padding: "15px"}}>{addDateByOne(entry[`${titles[4].name}`])}</td>
                             <td key={`${titles[5].name}x5${idx}`} style={{padding: "15px"}}>{entry[`${titles[5].name}`]}</td>
-                            <td key={`x4${idx}`} style={{padding: "15px"}} onClick={() => editEntry(idx)}><button>EDIT</button></td>
+                            <td key={`x4${idx}`} style={{padding: "15px"}} onClick={() => editEntry(entry.event_id)}><button>EDIT</button></td>
                             <td key={`x47${idx}`} style={{padding: "15px"}} onClick={() => deleteEntry(entry.event_id)}><button>x</button></td>
                         </tr>
                     )}

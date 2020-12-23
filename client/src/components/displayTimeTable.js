@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import "../App.css"
+import Modal from './editEntryModal'
 //import TimetableEntry from "./timetableEntry.js";
 
 
@@ -11,21 +12,50 @@ export const DisplayTimeTable = () => {
         [0,0,0,0,0,0]
     ])
     const [data, setData] = useState([]);
+    const [isFormOpen, setIsFormOpen] = useState(false);
+    const [tempData, setTempData] = useState(0);
 
     async function deleteEntry (id) {
         //get id from the object, and then delete things from it
         console.log("we are deleting this entry! " + id);
     }
 
-    async function editEntry (obj) {
+    
+    function pad(n, width, z) { //for padding zeros https://stackoverflow.com/questions/10073699/pad-a-number-with-leading-zeros-in-javascript
+        z = z || '0';
+        n = n + '';
+        return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
+      }
+
+    function editEntry (obj) {
         //get id from the object, and then recall everything in the form
-        console.log("we are editing this entry! " + JSON.stringify(obj));
+        //console.log("we are editing this entry! " + JSON.stringify(obj));
         if (obj.id === undefined){
-            obj.id = "CREATE NEW ENTRY";
+            obj.event_id = "CREATE_NEW_ENTRY";
             console.log("creating entry because no id!!!")
+            if (obj.clinic === undefined){
+                obj.clinic = ""
+            }
+            if (obj.doctor === undefined){
+                obj.doctor = ""
+            }
+            if (obj.am === undefined){
+                obj.am = ""
+            }
+            obj.date = document.getElementById("monthSelector").value + "-" + pad(obj.day, 2) //must use pad(X, 2) to pad number to 02 for date to work
+            if (obj.weight === undefined){
+                obj.weight = 1
+            }
+        } else {
+            obj = data.filter(entry => entry.event_id===obj.id)[0];
         }
+        console.log(obj.date)
+        console.log(typeof obj.date)
+        setTempData(obj);
+        setIsFormOpen(true);
 
     }
+
 
     async function changeMonth (e) {
         //console.log(e.target.value);
@@ -66,6 +96,9 @@ export const DisplayTimeTable = () => {
             target:{
                 value: new Date().toISOString().split("T")[0]
                 //forcing the current date into object even when target is not here
+                //bad pracitse, but deal with it!!
+                //if you call changeMonth must add this line,
+                //or otherwise you can copy below in modal
             }
         });
         // eslint-disable-next-line
@@ -74,6 +107,13 @@ export const DisplayTimeTable = () => {
     return (
 
         <div>
+            {/* JSON.stringify(data) */}
+            {/* JSON.stringify(tempData) */}
+            <Modal data={tempData} open={isFormOpen} onClose={() => {setIsFormOpen(false); setTempData({}); 
+                changeMonth({target:{value: document.getElementById('monthSelector').value
+                        //forcing the current date into object even when target is not here
+                    }
+                })}} />
             <div>
             {navigator.userAgent.indexOf("Firefox") != -1 ?<small style={{color:"red"}}>"The month selection table is not supported in FireFox as in 11/2020. Please select month by typing in manually e.g. 2020-11"<br /></small>:""}
                 <input type="month" 
@@ -83,7 +123,7 @@ export const DisplayTimeTable = () => {
                 </input>
                 <button onClick={()=>window.print()}>Print</button>
                 <h3 align="center">Roster</h3>
-                {JSON.stringify(data)}
+                {/* JSON.stringify(data) */}
                 {/*Array.isArray(data)?"true":"false"*/}
                 <br />
                 {/* load warning signal for firefix, since does not have feature for monthy selector */}
@@ -108,12 +148,12 @@ export const DisplayTimeTable = () => {
                         <tr key={week + idx}>
                             {week.map((day) => 
                                 <td style={{"verticalAlign": "top"}}>
-                                    {day==0?"":<b>{day}</b>}
+                                    {day==0?"":<><b>{day}</b>
                                     <table style={{width: "90%"}}>
                                         <tbody style={{border:'1px solid #d3d3d3'}}>
                                             <tr>
                                                 <th className="selectBox">
-                                                    am<button onClick={() => editEntry({day, "ampm": "am"})}  className="edit-btn" />
+                                                    am<button onClick={() => editEntry({day, "am": true})}  className="edit-btn" />
                                                 </th>
                                             </tr>
                                             {}
@@ -123,7 +163,7 @@ export const DisplayTimeTable = () => {
                                                 .filter(entry => entry.date.split("-")[2] == day)
                                                 .map(entry => entry.clinic))]
                                                 .map((clinic, index) =>
-                                                    <tr><td key={clinic + week + idx + index + "am"} style={{ minHeight: "50px", overflow: "hidden" }}><span>{clinic}<button className="edit-btn"  onClick={() => editEntry({day, "ampm": "am", clinic})}  /></span><br/>
+                                                    <tr><td key={clinic + week + idx + index + "am"} style={{ minHeight: "50px", overflow: "hidden" }}><span>{clinic}<button className="edit-btn"  onClick={() => editEntry({day, "am": true, clinic})}  /></span><br/>
                                                         {
                                                             data.filter(element => element.am === true)
                                                                 .filter(element => element.date.split("-")[2] == day)
@@ -136,16 +176,16 @@ export const DisplayTimeTable = () => {
                                                 <tr><td style={{"height": "50px"}}></td></tr>}
                                             <tr>
                                                 <th className="selectBox">
-                                                    pm<button onClick={() => editEntry({day, "ampm": "pm"})} className="edit-btn" />
+                                                    pm<button onClick={() => editEntry({day, "am": false})} className="edit-btn" />
                                                 </th>
                                             </tr>
-                                            {data.filter(entry => entry.am === true)
+                                            {data.filter(entry => entry.am === false)
                                             .filter(entry => entry.date.split("-")[2] == day).length>0?
                                             [...new Set(data.filter(entry => entry.am === false)
                                                 .filter(entry => entry.date.split("-")[2] == day)
                                                 .map(entry => entry.clinic))]
                                                 .map((clinic, index) =>
-                                                    <tr><td key={clinic + week + idx + index + "pm"}><span>{clinic}<button onClick={() => editEntry({day, "ampm": "pm", clinic})}  className="edit-btn" /></span><br/>
+                                                    <tr><td key={clinic + week + idx + index + "pm"}><span>{clinic}<button onClick={() => editEntry({day, "am": false, clinic})}  className="edit-btn" /></span><br/>
                                                         {
                                                             data.filter(element => element.am === false)
                                                                 .filter(element => element.date.split("-")[2] == day)
@@ -157,7 +197,7 @@ export const DisplayTimeTable = () => {
                                                 ):
                                                 <tr><td style={{"height": "50px"}}></td></tr>}
                                         </tbody>
-                                    </table>
+                                    </table></>}
                                 </td>
                             )}
                         </tr>
