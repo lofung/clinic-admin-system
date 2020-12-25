@@ -130,7 +130,7 @@ export const DoctorList = () => {
                 </div>
             </form>
 
-            <br />
+            {JSON.stringify(entries)}
             <br />
             <h4>Current list</h4>
             <table>
