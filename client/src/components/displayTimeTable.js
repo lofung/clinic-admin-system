@@ -94,7 +94,7 @@ export const DisplayTimeTable = () => {
     useEffect(() =>{
         changeMonth({
             target:{
-                value: new Date().toISOString().split("T")[0]
+                value: new Date(2020, 11, 1).toISOString().split("T")[0]
                 //forcing the current date into object even when target is not here
                 //bad pracitse, but deal with it!!
                 //if you call changeMonth must add this line,
@@ -118,7 +118,7 @@ export const DisplayTimeTable = () => {
             {navigator.userAgent.indexOf("Firefox") != -1 ?<small style={{color:"red"}}>"The month selection table is not supported in FireFox as in 11/2020. Please select month by typing in manually e.g. 2020-11"<br /></small>:""}
                 <input type="month" 
                     id="monthSelector"
-                    defaultValue={new Date().toISOString().substring(0, 7)}
+                    defaultValue={new Date(2020, 11, 1).toISOString().substring(0, 7)}
                     onChange={changeMonth}>
                 </input>
                 <button onClick={()=>window.print()}>Print</button>

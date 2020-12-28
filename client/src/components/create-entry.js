@@ -207,7 +207,7 @@ export const CreateEntry = () => {
 
     return (
         <div>
-            {JSON.stringify(entries)}
+            {/* JSON.stringify(entries) */}
             <form name="editForm" onSubmit={onSubmit}>
                 <div>
                     <div>
@@ -248,11 +248,7 @@ export const CreateEntry = () => {
                     <button>Submit</button>
                 <div>
                 {id==="CREATE_NEW_ENTRY"?"":<button onClick={() => setId("CREATE_NEW_ENTRY") }>Switch to entry creation</button>}
-                {/*JSON.stringify(doctorList)*/}<br />
-                {/*JSON.stringify(clinicList)*/}<br />
-                {/*date*/}<br />
-                {/* ampm */}<br />
-                {/*error*/}<br />
+                {/*JSON.stringify(doctorList)*/}{/*JSON.stringify(clinicList)*/}{/*date*/}{/* ampm */}{/*error*/}<br />
                 </div>
             </form>
 

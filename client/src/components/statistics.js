@@ -43,7 +43,7 @@ export const Statistics = () => {
             {navigator.userAgent.indexOf("Firefox") != -1 ?<small style={{color:"red"}}>"The month selection table is not supported in FireFox as in 11/2020. Please select month by typing in manually e.g. 2020-11"<br /></small>:""}
                 <input type="month" 
                     id="startMonthSelector"
-                    defaultValue={new Date().toISOString().substring(0, 7)}
+                    defaultValue={new Date(2020, 1, 1).toISOString().substring(0, 7)}
                     onChange={loadData}>
                 </input>
                 <button onClick={()=>window.print()}>Print</button>
