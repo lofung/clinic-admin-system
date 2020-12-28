@@ -3,14 +3,15 @@ const router = express.Router();
 const pool = require("../config/elephantsql");
 const bcrypt = require("bcryptjs");
 const passport = require('passport');
+const { ensureNotAuthenticated } = require('../config/auth');
 
 
 // login page
-router.get('/login', (req, res) => res.render('login'));
+router.get('/login', ensureNotAuthenticated, (req, res) => res.render('login'));
 //will render login.ejs
 
 // register page
-router.get('/register', (req, res) => res.render('register'));
+router.get('/register', ensureNotAuthenticated, (req, res) => res.render('register'));
 //will render register.ejs
 
 // register handle
@@ -108,7 +109,7 @@ router.post('/register', async (req, res) => {
 router.post('/login', (req, res, next) => {
     //console.log(res.body)
     passport.authenticate('local', {
-        successRedirect: "/dashboard",
+        successRedirect: "/",
         failureRedirect: "/auth/login",
         failureFlash: true
     }) (req, res, next);

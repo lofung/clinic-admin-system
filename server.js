@@ -11,6 +11,7 @@ const path = require('path');
 const flash = require('connect-flash');
 const session = require('express-session');
 const passport = require('passport');
+const { ensureAuthenticated } = require('./config/auth');
 
 dotenv.config({ path: './config/config.env' });
 
@@ -66,11 +67,12 @@ if (process.env.NODE_ENV === "development") {
 
 app.use('/api/v1/', routes);
 app.use('/auth/', users);
-app.use('/', require('./routes/index'));
+app.use('/', ensureAuthenticated, require('./routes/index'));
 
 if (process.env.NODE_ENV === "production") {
     app.use(express.static('client/build'));
-    app.get('*', (req, res) => res.sendFile(path.resolve(__dirname, "client", "build", "index.html")));
+    app.get('*', ensureAuthenticated, (req, res) => res.sendFile(path.resolve(__dirname, "client", "build", "index.html")));
+    
 }
 
 const PORT = process.env.PORT || 5000;
