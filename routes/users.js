@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const pool = require("../config/elephantsql");
 const bcrypt = require("bcryptjs");
-
+const passport = require('passport');
 
 
 // login page
@@ -45,7 +45,6 @@ router.post('/register', async (req, res) => {
                 errors.push({ msg: "Please try pushing register again" });
                 res.render('register', {
                     errors,
-              
                     name,
                     loginId,
                     password,
@@ -92,15 +91,34 @@ router.post('/register', async (req, res) => {
                 try {
                     const newDoctor = await pool.query("INSERT INTO login_table (login_name, doc_name, password) VALUES ($1, $2, $3)",
                     [loginId, name, hash])
-                    return res.render('login', {errors: [{msg: "account creation sucessful"}], name, loginId})
+                    req.flash('success_msg', "You are now registered and can log in")
+                    return res.redirect('/auth/login')
+                    //MUST use redirect for req.flash
                 } catch (err) {
                     return res.status(500).json({
                         success: false,
-                        error: "Server Error"
+                        error: "Server Error, can retrieve register draft but cannot register"
                     });
                 }
         }))
     }
 });
+
+//login handle
+router.post('/login', (req, res, next) => {
+    //console.log(res.body)
+    passport.authenticate('local', {
+        successRedirect: "/dashboard",
+        failureRedirect: "/auth/login",
+        failureFlash: true
+    }) (req, res, next);
+})
+
+//logout handle
+router.get('/logout', (req, res) => {
+    req.logout();
+    req.flash('success_msg', "You have been logged out");
+    res.redirect('/auth/login');
+})
 
 module.exports = router;
