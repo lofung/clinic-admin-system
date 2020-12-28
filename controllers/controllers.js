@@ -1,5 +1,6 @@
 const EntrySchema = require('../models/entries');
 const pool = require("../config/elephantsql");
+const bcrypt = require("bcryptjs");
 
 //@DESC     Get all entries
 //@route    GET /api/v1/
@@ -192,21 +193,29 @@ exports.getDoctorList = async (req, res, next) => {
 
 
 exports.addDoctor = async (req, res, next) => {
-    try {
-        console.log(req.body);
-        const { regName, displayName, password } = req.body;
-        const newDoctor = await pool.query("INSERT INTO login_table (login_name, doc_name, password) VALUES ($1, $2, $3)",
-        [regName, displayName, password])
-        return res.status(201).json({
-            success: true,
-            message: {regName, displayName, password}
-        })
-    } catch (err) {
-        return res.status(500).json({
-            success: false,
-            error: "Server Error"
-        });
-    }
+    console.log(req.body);
+    const { regName, displayName, password, isAdmin } = req.body;
+
+    bcrypt.genSalt(10, (err, salt) => 
+            bcrypt.hash(password, salt, async (err, hash)=> {
+                if(err) throw err;
+                console.log(hash)
+                console.log("login ID is " + regName + "!! name is " + displayName + "!! hashpassword is " + hash + " admin is " + isAdmin)
+                console.log(hash.length)
+                try {
+                    const newDoctor = await pool.query("INSERT INTO login_table (login_name, doc_name, password, is_Admin) VALUES ($1, $2, $3, $4)",
+                    [regName, displayName, hash, isAdmin])
+                    return res.status(201).json({
+                        success: true,
+                        message: {regName, displayName, isAdmin}
+                    })
+                } catch (err) {
+                    return res.status(500).json({
+                        success: false,
+                        error: "Server Error, can retrieve register draft but cannot register"
+                    });
+                }
+        }))
 }
 
 exports.editDoctor = async (req, res, next) => {

@@ -82,16 +82,17 @@ router.post('/register', async (req, res) => {
             })
             return 1
         }
+        const isAdmin = false;
         //res.send('success')
         bcrypt.genSalt(10, (err, salt) => 
             bcrypt.hash(password, salt, async (err, hash)=> {
                 if(err) throw err;
-                console.log(hash)
-                console.log("login ID is " + loginId + "!! name is " + name + "!! hashpassword is " + hash)
-                console.log(hash.length)
+                //console.log(hash)
+                //console.log("login ID is " + loginId + "!! name is " + name + "!! hashpassword is " + hash)
+                //console.log(hash.length)
                 try {
-                    const newDoctor = await pool.query("INSERT INTO login_table (login_name, doc_name, password) VALUES ($1, $2, $3)",
-                    [loginId, name, hash])
+                    const newDoctor = await pool.query("INSERT INTO login_table (login_name, doc_name, password, is_Admin) VALUES ($1, $2, $3, $4)",
+                    [loginId, name, hash, isAdmin])
                     req.flash('success_msg', "You are now registered and can log in")
                     return res.redirect('/auth/login')
                     //MUST use redirect for req.flash

@@ -5,6 +5,7 @@ export const DoctorList = () => {
     const [titles, setTitles] = useState([]);
     const [entries, setEntries] = useState([]);
     const [regName, setRegName] = useState("");
+    const [isAdmin, setIsAdmin] = useState(false);
     const [displayName, setDisplayName] = useState("");
     const [password, setPassword] = useState("");
     const [rePassword, setRePassword] = useState("");
@@ -34,6 +35,7 @@ export const DoctorList = () => {
         setRePassword("");
         setPrevRegName("");
         setPrevDisplayName("");
+        setIsAdmin(false);
     }
 
     const onSubmit = async (e) => {
@@ -46,7 +48,7 @@ export const DoctorList = () => {
             const response = await fetch("/api/v1/doctorlist", {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
-                body: JSON.stringify({ regName, displayName, password })
+                body: JSON.stringify({ regName, displayName, password, isAdmin })
             });
             await getDoctorList();
             console.log(response);
@@ -111,7 +113,7 @@ export const DoctorList = () => {
                 </div>
                 <div>
                     <label>Set display name in roster and statistics　</label>  
-                    <input type="text" value={displayName} onChange={(e) => setDisplayName(e.target.value)} placeholder="input display name"></input> {prevDisplayName===""?"":` (${prevDisplayName})`}
+                    <input type="text" value={displayName} onChange={(e) => setDisplayName(e.target.value)} placeholder="DO NOT input if no show at doctor list"></input> {prevDisplayName===""?"":` (${prevDisplayName})`}
                 </div>
                 <div>
                     <label>Set password　</label>  
@@ -121,16 +123,18 @@ export const DoctorList = () => {
                     <label>Type password again　</label>  
                     <input type="text" value={rePassword} onChange={(e) => setRePassword(e.target.value)} ></input>
                 </div>
+                <div>
+                    <label>Admin Role　</label>  
+                    <input type="checkbox" value={isAdmin} onChange={(e) => setIsAdmin(e.target.checked)} ></input>
+                </div>
                     {password===rePassword?
                     <button>Submit</button>:<h6 style={{color: "red"}}>Please type password again</h6>}
                 <div>
-                {/* regName */ }<br />
-                {/* displayName */}<br />
-                {/* password */}<br />
+                {/* regName */ }{/* displayName */}{/* password */}{/* "he is admin " + isAdmin */}<br />
                 </div>
             </form>
 
-            {JSON.stringify(entries)}
+            {/* JSON.stringify(entries) */}
             <br />
             <h4>Current list</h4>
             <table>
@@ -148,8 +152,9 @@ export const DoctorList = () => {
                             <td key={`${titles[1].name}x1${idx}`} style={{padding: "15px"}}>{entry[`${titles[1].name}`]}</td>
                             <td key={`${titles[2].name}x2${idx}`} style={{padding: "15px"}}>{entry[`${titles[2].name}`]}</td>
                             <td key={`${titles[3].name}x3${idx}`} style={{padding: "15px"}}>{entry[`${titles[3].name}`]}</td>
+                            <td key={`${titles[4].name}x4${idx}`} style={{padding: "15px"}}>{entry[`${titles[4].name}`]===true?"true":entry[`${titles[4].name}`]===false?"false":""}</td>
                             {/*<td key={`x4${idx}`} style={{padding: "15px"}} onClick={() => editDoctor(idx)}><button>EDIT</button></td>*/}
-                            <td key={`x47${idx}`} style={{padding: "15px"}}>{entry.login_id===1?"":<button onClick={() => deleteDoctor(entry.login_id)}>x</button>}</td>
+                            <td key={`x47${idx}`} style={{padding: "15px"}}>{entry.login_id===30?"":<button onClick={() => deleteDoctor(entry.login_id)}>x</button>}</td>
                         </tr>
                     )}
                 </tbody>

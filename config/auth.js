@@ -16,7 +16,7 @@ module.exports = {
         if (process.env.NODE_ENV === "production") {
             res.redirect('/');
         } else {
-            res.redirect('/dashboard')
+            res.redirect('/ashboard')
         }
     }
 }

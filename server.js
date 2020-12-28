@@ -67,7 +67,7 @@ if (process.env.NODE_ENV === "development") {
 
 app.use('/api/v1/', routes);
 app.use('/auth/', users);
-app.use('/', ensureAuthenticated, require('./routes/index'));
+app.use('/', require('./routes/index'));
 
 if (process.env.NODE_ENV === "production") {
     app.use(express.static('client/build'));

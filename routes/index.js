@@ -5,7 +5,10 @@ const path = require('path');
 
 
 // welcome page
-//router.get('/', (req, res) => res.render('welcome'));
+if (process.env.NODE_ENV === "production") {
+    router.get('/', ensureAuthenticated, (req, res) => res.sendFile(path.resolve(__dirname, "..", "client", "build", "index.html")));
+}
+
 
 // dashboard
 router.get('/dashboard', ensureAuthenticated, (req, res) => 
