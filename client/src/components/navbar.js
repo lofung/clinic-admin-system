@@ -17,19 +17,19 @@ export default class Navbar extends Component {
           <li className="navbar-item">
           <Link to="/statistics" className="nav-link">Statistics</Link>
           </li>
-          {this.props.isAdmin?<li className="navbar-item">
+          {this.props.sessionIsAdmin?<li className="navbar-item">
           <Link to="/create" className="nav-link">Create Entry</Link>
           </li>:""}
-          {this.props.isAdmin?<li className="navbar-item">
+          {this.props.sessionIsAdmin?<li className="navbar-item">
           <Link to="/doctorlist" className="nav-link">Doctor List</Link>
           </li>:""}
-          {this.props.isAdmin?<li className="navbar-item">
+          {this.props.sessionIsAdmin?<li className="navbar-item">
           <Link to="/cliniclist" className="nav-link">Clinic List</Link>
           </li>:""}
         </ul>
         <ul className="navbar-nav navbar-right" /* navbar-right make things right! */>
           <li className="navbar-item">
-          <a href="/auth/logout" className="nav-link">Logout, {this.props.displayName}</a>
+          <a href="/auth/logout" className="nav-link">Logout, {this.props.sessionDisplayName}</a>
           </li>
         </ul>
         </div>

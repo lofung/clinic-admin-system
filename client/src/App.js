@@ -13,8 +13,8 @@ import ClinicList from "./components/clinicList";
 
 function App() {
 
-  const [userName, setUserName] = useState("no name");
-  const [isAdmin, setIsAdmin] = useState(false);
+  const [userName, setUserName] = useState("jjj");
+  const [isAdmin, setIsAdmin] = useState(true);
   
   const fetchLoginData = async () => {
     try {
@@ -33,13 +33,19 @@ function App() {
   return (
     <Router>
       <div className="container">
-      <Navbar isAdmin={isAdmin} displayName={userName}/>
+      <Navbar sessionIsAdmin={isAdmin} sessionDisplayName={userName} />
       <br/>
-      <Route path="/" exact component={DisplayTimeTable} />
+      {/* old routes for record and roll back
       <Route path="/statistics" component={Statistics} />
-      <Route path="/create" component={CreateEntry} />
-      <Route path="/doctorlist" component={DoctorList} />
-      <Route path="/cliniclist" component={ClinicList} />
+      <Route path="/doctorlist" component={DoctorList} isAdmin={isAdmin} displayName={userName} />
+      <Route path="/cliniclist" component={ClinicList} isAdmin={isAdmin} displayName={userName} />  
+      */}
+      <Route path="/" exact component={() => <DisplayTimeTable sessionIsAdmin={isAdmin} sessionDisplayName={userName} />} />
+      <Route path="/create" component={() => <CreateEntry sessionIsAdmin={isAdmin} sessionDisplayName={userName} />} />
+      <Route path="/statistics" component={Statistics} />
+      <Route path="/doctorlist" component={() => <DoctorList sessionIsAdmin={isAdmin} sessionDisplayName={userName}  />}/>
+      <Route path="/cliniclist" component={() => <ClinicList sessionIsAdmin={isAdmin} sessionDisplayName={userName}  />} /> 
+     
       </div>
     </Router>
 

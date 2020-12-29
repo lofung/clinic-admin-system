@@ -1,7 +1,7 @@
 import React, {Component, useState, useEffect} from 'react'
 import axios from "axios"
 
-export const CreateEntry = () => {
+export const CreateEntry = ({ sessionIsAdmin, sessionDisplayName }) => {
     const [doctorTable, setDoctorTable] = useState("");
     const [clinicTable, setClinicTable] = useState("");
     const [doctorList, setDoctorList] = useState([]);
@@ -198,16 +198,19 @@ export const CreateEntry = () => {
     }
 
     useEffect(() => {
+        console.log("this is admin " +sessionIsAdmin);
+        console.log("this is display name " +sessionDisplayName)
         getDoctorList();
         getClinicList();
         getEventList();
         //console.log(doctorTable);
         //console.log(clinicTable);
     }, []);
-
+    
+    if (sessionIsAdmin === true) {
     return (
         <div>
-            {/* JSON.stringify(entries) */}
+            {/* JSON.stringify(entries) */}{sessionIsAdmin}{sessionDisplayName}
             <form name="editForm" onSubmit={onSubmit}>
                 <div>
                     <div>
@@ -278,7 +281,9 @@ export const CreateEntry = () => {
             </table>
 
         </div>
-    )
+    )} else {
+        return <div>Hello {sessionDisplayName}, you have no right to access this page. Please contact the admins for rights.</div>
+    }
 }
 
 export default CreateEntry

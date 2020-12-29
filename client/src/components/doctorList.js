@@ -1,6 +1,6 @@
 import React, {useState, useEffect, Component} from 'react'
 
-export const DoctorList = () => {
+export const DoctorList = ({ sessionIsAdmin, sessionDisplayName }) => {
     const [editId, setEditId] = useState("");
     const [titles, setTitles] = useState([]);
     const [entries, setEntries] = useState([]);
@@ -102,6 +102,7 @@ export const DoctorList = () => {
         getDoctorList();
     }, []);
 
+    if(sessionIsAdmin===true){
     return (
         <div>
             <h4>{editId===""?"Add account (doctor or admin)":"Edit Account Details"}</h4>
@@ -160,7 +161,9 @@ export const DoctorList = () => {
                 </tbody>
             </table>
         </div>
-    )
+    )} else {
+        return <div>Hello {sessionDisplayName}, you have no right to access this page. Please contact the admins for rights.</div>
+    }
 }
 
 export default DoctorList
