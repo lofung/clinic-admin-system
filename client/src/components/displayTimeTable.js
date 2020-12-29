@@ -5,7 +5,7 @@ import Modal from './editEntryModal'
 
 
 
-export const DisplayTimeTable = () => {
+export const DisplayTimeTable = ({displayName}) => {
 
     
     const [monthArray, setMonthArray] = useState([//initial
@@ -107,8 +107,7 @@ export const DisplayTimeTable = () => {
     return (
 
         <div>
-            {/* JSON.stringify(data) */}
-            {/* JSON.stringify(tempData) */}
+            {displayName?JSON.stringify(displayName):"no props is here"}{/* JSON.stringify(data) */}{/* JSON.stringify(tempData) */}
             <Modal data={tempData} open={isFormOpen} onClose={() => {setIsFormOpen(false); setTempData({}); 
                 changeMonth({target:{value: document.getElementById('monthSelector').value
                         //forcing the current date into object even when target is not here

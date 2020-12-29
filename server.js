@@ -67,11 +67,14 @@ if (process.env.NODE_ENV === "development") {
 
 app.use('/api/v1/', routes);
 app.use('/auth/', users);
+app.use('/authDetails/', (req, res) => res.json( {doc_name: "doc_name", is_admin: "true"} ));
 app.use('/', require('./routes/index'));
 
 if (process.env.NODE_ENV === "production") {
     app.use(express.static('client/build'));
-    app.get('*', ensureAuthenticated, (req, res) => res.sendFile(path.resolve(__dirname, "client", "build", "index.html")));
+    app.get('*', ensureAuthenticated, (req, res) => res.sendFile(path.resolve(__dirname, "client", "build", "index.html"), {
+        displayName: req.user.doc_name
+    }));
     
 }
 
