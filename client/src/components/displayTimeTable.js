@@ -15,6 +15,26 @@ export const DisplayTimeTable = ({sessionIsAdmin, sessionDisplayName}) => {
     const [isFormOpen, setIsFormOpen] = useState(false);
     const [tempData, setTempData] = useState(0);
 
+    
+    function doctorDropStart(input) {
+        //console.log("drag start " + input.id)
+        input.event_id = input.id
+        input.doctor = data.filter(entry=>entry.event_id===input.id)[0]['doctor']
+
+        setTempData(input);
+    }
+
+    function onDrop(obj) {
+        console.log("dropping in " + obj.am + " " + obj.date)
+        let tempObj = Object.assign({}, tempData);
+        tempObj.am = obj.am
+        tempObj.date = obj.date
+        tempObj.weight = 1
+        if(obj.clinic) {tempObj.clinic = obj.clinic}
+        setTempData(tempObj)
+        setIsFormOpen(true);
+    }
+
     async function deleteEntry (id) {
         //get id from the object, and then delete things from it
         console.log("we are deleting this entry! " + id);
@@ -49,8 +69,8 @@ export const DisplayTimeTable = ({sessionIsAdmin, sessionDisplayName}) => {
         } else {
             obj = data.filter(entry => entry.event_id===obj.id)[0];
         }
-        console.log(obj.date)
-        console.log(typeof obj.date)
+        //console.log(obj.date)
+        //console.log(typeof obj.date)
         setTempData(obj);
         setIsFormOpen(true);
 
@@ -106,7 +126,7 @@ export const DisplayTimeTable = ({sessionIsAdmin, sessionDisplayName}) => {
 
     return (
         <div>
-            {sessionDisplayName} admin? {sessionIsAdmin?"true":"false"}{/* JSON.stringify(data) */}{/* JSON.stringify(tempData) */}
+            {/*sessionDisplayName} admin? {/*sessionIsAdmin?"true":"false"*/}{/*JSON.stringify(data)*/}{/*JSON.stringify(tempData)*/}
             <Modal data={tempData} open={isFormOpen} onClose={() => {setIsFormOpen(false); setTempData({}); 
                 changeMonth({target:{value: document.getElementById('monthSelector').value
                         //forcing the current date into object even when target is not here
@@ -150,7 +170,7 @@ export const DisplayTimeTable = ({sessionIsAdmin, sessionDisplayName}) => {
                                     <table style={{width: "90%"}}>
                                         <tbody style={{border:'1px solid #d3d3d3'}}>
                                             <tr>
-                                                <th className="selectBox">
+                                                <th className="selectBox" onDrop={()=>onDrop({"am": true, "date":document.getElementById("monthSelector").value + "-" + pad(day, 2)})} onDragOver={(e)=>e.preventDefault()} onDragEnter={(e)=>e.preventDefault()}>
                                                     am<button onClick={() => editEntry({day, "am": true})}  className="edit-btn" />
                                                 </th>
                                             </tr>
@@ -161,19 +181,19 @@ export const DisplayTimeTable = ({sessionIsAdmin, sessionDisplayName}) => {
                                                 .filter(entry => entry.date.split("-")[2] == day)
                                                 .map(entry => entry.clinic))]
                                                 .map((clinic, index) =>
-                                                    <tr><td key={clinic + week + idx + index + "am"} style={{ minHeight: "50px", overflow: "hidden" }}><span>{clinic}<button className="edit-btn"  onClick={() => editEntry({day, "am": true, clinic})}  /></span><br/>
+                                                    <tr><td key={clinic + week + idx + index + "am"} style={{ minHeight: "50px", overflow: "hidden" }}><span onDrop={()=>onDrop({"am": true, "clinic": clinic,"date":document.getElementById("monthSelector").value + "-" + pad(day, 2)})}  onDragOver={(e)=>e.preventDefault()} onDragEnter={(e)=>e.preventDefault()}>{clinic}<button className="edit-btn"  onClick={() => editEntry({day, "am": true, clinic})}  /></span><br/>
                                                         {
                                                             data.filter(element => element.am === true)
                                                                 .filter(element => element.date.split("-")[2] == day)
                                                                 .filter(element => element.clinic == clinic)
                                                                 .map(element =>
-                                                                    <span>{element.doctor}, <button onClick={() => editEntry({id: element.event_id})} className="edit-btn" /><button onClick={() => deleteEntry(element.event_id)} className="delete-btn right-btn" /></span>)
+                                                                    <span draggable="true" onDragStart={() => doctorDropStart({id: element.event_id})}>{element.doctor}, <button onClick={() => editEntry({id: element.event_id})} className="edit-btn" /><button onClick={() => deleteEntry(element.event_id)} className="delete-btn right-btn" /></span>)
                                                         }
                                                     </td></tr>
                                                 ):
                                                 <tr><td style={{"height": "50px"}}></td></tr>}
                                             <tr>
-                                                <th className="selectBox">
+                                                <th className="selectBox" onDrop={()=>onDrop({"am": false, "date":document.getElementById("monthSelector").value + "-" + pad(day, 2)})}  onDragOver={(e)=>e.preventDefault()} onDragEnter={(e)=>e.preventDefault()}>
                                                     pm<button onClick={() => editEntry({day, "am": false})} className="edit-btn" />
                                                 </th>
                                             </tr>
@@ -183,13 +203,13 @@ export const DisplayTimeTable = ({sessionIsAdmin, sessionDisplayName}) => {
                                                 .filter(entry => entry.date.split("-")[2] == day)
                                                 .map(entry => entry.clinic))]
                                                 .map((clinic, index) =>
-                                                    <tr><td key={clinic + week + idx + index + "pm"}><span>{clinic}<button onClick={() => editEntry({day, "am": false, clinic})}  className="edit-btn" /></span><br/>
+                                                    <tr><td key={clinic + week + idx + index + "pm"}><span onDrop={()=>onDrop({"am": false, "clinic": clinic,"date":document.getElementById("monthSelector").value + "-" + pad(day, 2)})}  onDragOver={(e)=>e.preventDefault()} onDragEnter={(e)=>e.preventDefault()}>{clinic}<button onClick={() => editEntry({day, "am": false, clinic})}  className="edit-btn" /></span><br/>
                                                         {
                                                             data.filter(element => element.am === false)
                                                                 .filter(element => element.date.split("-")[2] == day)
                                                                 .filter(element => element.clinic == clinic)
                                                                 .map(element =>
-                                                                    <span>{element.doctor}, <button onClick={() => editEntry({id: element.event_id})} className="edit-btn" /><button onClick={() => deleteEntry(element.event_id)} className="delete-btn right-btn" /></span>)
+                                                                    <span draggable="true" onDragStart={() => doctorDropStart({id: element.event_id})}>{element.doctor}, <button onClick={() => editEntry({id: element.event_id})} className="edit-btn" /><button onClick={() => deleteEntry(element.event_id)} className="delete-btn right-btn" /></span>)
                                                         }
                                                     </td></tr>
                                                 ):
