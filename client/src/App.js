@@ -14,14 +14,14 @@ import ClinicList from "./components/clinicList";
 function App() {
 
   const [userName, setUserName] = useState("jjj");
-  const [isAdmin, setIsAdmin] = useState(true);
+  const [isAdmin, setIsAdmin] = useState(false);
   
   const fetchLoginData = async () => {
     try {
        const loginData = await (await fetch("http://localhost:5000/authDetails")).json()
-       console.log("login data is " + JSON.stringify(loginData))
-       setUserName(loginData.doc_name)
-       setIsAdmin(loginData.is_admin)
+       //console.log("login data is " + JSON.stringify(loginData))
+       await setUserName(loginData.doc_name)
+       await setIsAdmin(loginData.is_admin)
        if(loginData.is_admin==="true") { setIsAdmin(true) }
        if(loginData.doc_name==="doc_name")  { setUserName("unknown user") }
     } catch (err) {
