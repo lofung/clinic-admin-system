@@ -57,9 +57,9 @@ export const Statistics = () => {
             </div>
             <h3 align="center">Statistics</h3>
             <br />
-            <div>For discussion purposes, since doctors care very much about a fair workload and who gets what leaves during holidays.</div>
+            <div>This tab is for discussion purposes. Since doctors care very much about a fair workload and who gets what leaves during holidays.</div>
             <div>You may hover cursor on the respective number box for a detail breakdown of the numbers, "so that no one did their data input wrong!"</div>
-            <div>Select the dates on the two sides of the screen for dates inclusive</div>
+            <div>Hover the dates on the two sides of the screen for dates inclusive</div>
             <table id="statTable">
                 <thead>
                     <tr>
@@ -82,7 +82,7 @@ export const Statistics = () => {
                                         {clinic} {dr}
                                         {data.filter(entry => entry.clinic ==clinic)
                                         .filter(entry=>entry.doctor==dr)
-                                        .map(entry => <div>{entry.date} {getWeekDate(new Date(entry.date))}</div> )}
+                                        .map(entry => <div>{entry.date} {getWeekDate(new Date(entry.date))} weight={entry.weight}</div> )}
                                 </span>
                              </td>
                         ))}
