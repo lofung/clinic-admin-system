@@ -224,7 +224,8 @@ export const CreateEntry = ({ sessionIsAdmin, sessionDisplayName }) => {
                 <div>
                     <label>Clinic　</label>  
                     <select value={clinic} onChange={(e) => setClinic(e.target.value)} required>
-                    <option selected="true" disabled="disabled" value="">Select Clinic</option>
+                    <option disabled="disabled" selected="true" value="">Select Clinic</option>
+                    {/* Warning: Use the `defaultValue` or `value` props on <select> instead of setting `selected` on <option>. HAS TO BE delibrately offented to make selecting disabled option work*/}
                         {clinicList.map((data, idx ) => (
                             <option key={`${data}ak47c${idx}`} value={data}>{data}</option>
                         ))}

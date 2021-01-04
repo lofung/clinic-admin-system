@@ -125,7 +125,9 @@ export const DoctorList = ({ sessionIsAdmin, sessionDisplayName }) => {
                 {/* regName */ }{/* displayName */}{/* password */}{/* "he is admin " + isAdmin */}<br />
                 </div>
             </form>
-
+            <div>Instead of using indexes, the systems were intended to use the exact strings for reporting. Either the doctors wish to have an option deleted but the record remains, or some doctors would have tempers "I do not want to see that name anymore!"</div>
+            <br/>
+            <div>For an admin name to not show on the doctor selection menu in other pages, enter the display name as "nothing, blank space". As the doctor selection list flatterns the doctor list and removes any blank entry. The same is true for clinic selection list.</div>
             {/* JSON.stringify(entries) */}
             <br />
             <h4>Current list</h4>
@@ -143,10 +145,10 @@ export const DoctorList = ({ sessionIsAdmin, sessionDisplayName }) => {
                             <td key={`${titles[0].name}x0${idx}`} style={{padding: "15px"}}>{entry[`${titles[0].name}`]}</td>
                             <td key={`${titles[1].name}x1${idx}`} style={{padding: "15px"}}>{entry[`${titles[1].name}`]}</td>
                             <td key={`${titles[2].name}x2${idx}`} style={{padding: "15px"}}>{entry[`${titles[2].name}`]}</td>
-                            <td key={`${titles[3].name}x3${idx}`} style={{padding: "15px"}}>{entry[`${titles[3].name}`]}</td>
+                            <td key={`${titles[3].name}x3${idx}`} style={{padding: "15px"}}>****{/*entry[`${titles[3].name}`]*/}</td>
                             <td key={`${titles[4].name}x4${idx}`} style={{padding: "15px"}}>{entry[`${titles[4].name}`]===true?"true":entry[`${titles[4].name}`]===false?"false":""}</td>
                             {/*<td key={`x4${idx}`} style={{padding: "15px"}} onClick={() => editDoctor(idx)}><button>EDIT</button></td>*/}
-                            <td key={`x47${idx}`} style={{padding: "15px"}}>{entry.login_id===30?"":<button onClick={() => deleteDoctor(entry.login_id)}>x</button>}</td>
+                            <td key={`x47${idx}`} style={{padding: "15px"}}>{entry.login_id===30||entry.login_id===32||entry.login_id===33?"":<button onClick={() => deleteDoctor(entry.login_id)}>x</button>}</td>
                         </tr>
                     )}
                 </tbody>

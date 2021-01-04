@@ -167,6 +167,9 @@ export const DisplayTimeTable = ({sessionIsAdmin, sessionDisplayName}) => {
                 {/* load warning signal for firefix, since does not have feature for monthy selector */}
                 
             </div>
+            <div>Hover on the am/pm, clinic name, or doctor name box for editing and deleting entries (all account has such right)</div>
+            <br />
+            <div>You may also drag any doctor box into clinics or am/pm box, that would edit the doctor entry for you. You can take a look at the edited entry before you submit the change.</div>
             <br />
             <div style={{margin: 'auto'}}>
                 <table style={{width: '100%'}}>

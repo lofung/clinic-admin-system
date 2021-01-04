@@ -67,7 +67,7 @@ if (process.env.NODE_ENV === "development") {
 
 app.use('/api/v1/', routes);
 app.use('/auth/', users);
-app.use('/authDetails/', (req, res) => res.json( {doc_name: "doc_name", is_admin: "true"} ));
+app.use('/authDetails/', (req, res) => res.json( {"doc_name": req.user.doc_name, "is_admin": req.user.is_admin} ));
 app.use('/', require('./routes/index'));
 
 if (process.env.NODE_ENV === "production") {

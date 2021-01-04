@@ -57,12 +57,15 @@ export const Statistics = () => {
             </div>
             <h3 align="center">Statistics</h3>
             <br />
+            <div>For discussion purposes, since doctors care very much about a fair workload and who gets what leaves during holidays.</div>
+            <div>You may hover cursor on the respective number box for a detail breakdown of the numbers, "so that no one did their data input wrong!"</div>
+            <div>Select the dates on the two sides of the screen for dates inclusive</div>
             <table id="statTable">
                 <thead>
                     <tr>
                         <th style={{"width":"12%", "height": "40px"}} ></th>
                     {clinicArray.map((clinic, idx) => (
-                        <th style={{"width":"10%"}} key={clinic+"xy"+idx}>{clinic}</th>
+                        <th style={{"width":"10%"}} key={clinic+"111xy"+idx}>{clinic}</th>
                     ))}
                     </tr>
                 </thead>

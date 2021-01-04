@@ -138,11 +138,11 @@ export const ClinicList = ({ sessionIsAdmin, sessionDisplayName }) => {
                     <button>Submit</button>
                 <div>
                 {/* weekday */}
-                {ampm===true?"true":ampm===false?"false":"null"}
+                {/*ampm===true?"true":ampm===false?"false":"null"*/}
                 {/* password */}
                 </div>
             </form>
-
+            <div>Note: There used to be a plan where the days set in the database would <a href="https://davidwalsh.name/demo/jqueryuicalpicker.jpg">limit on the choice selectable</a> on the frontend calendar. However, it was discovered later that the function would be hard to implement across browsers and hence left on blueprints.</div>
             <br />
             <br />
             <h4>Current list</h4>
