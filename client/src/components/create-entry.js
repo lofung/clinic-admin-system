@@ -1,9 +1,7 @@
-import React, {Component, useState, useEffect} from 'react'
+import React, {useState, useEffect} from 'react'
 import axios from "axios"
 
 export const CreateEntry = ({ sessionIsAdmin, sessionDisplayName }) => {
-    const [doctorTable, setDoctorTable] = useState("");
-    const [clinicTable, setClinicTable] = useState("");
     const [doctorList, setDoctorList] = useState([]);
     const [clinicList, setClinicList] = useState([]);
     const [titles, setTitles] = useState([]);
@@ -34,7 +32,7 @@ export const CreateEntry = ({ sessionIsAdmin, sessionDisplayName }) => {
         try {
             const response = await fetch("/api/v1/");
             const jsonData = await response.json();
-            console.log(jsonData);
+            //console.log(jsonData);
             setTitles(jsonData.fields);
             setEntries(jsonData.rows);
             //console.log(titles);
@@ -50,7 +48,7 @@ export const CreateEntry = ({ sessionIsAdmin, sessionDisplayName }) => {
             column.push(matrix[i][col])
         }
         //flattern array
-        column = [... new Set(column)];
+        column = [...new Set(column)];
         column = column.filter(function (el){
             return el!="";
         })
@@ -66,7 +64,7 @@ export const CreateEntry = ({ sessionIsAdmin, sessionDisplayName }) => {
         }
         try {
             const res = await axios.post('/api/v1/', newEntry, config);
-            console.log(res) //new object from post
+            //console.log(res) //new object from post
             setError("SUCCESS")
             //1:03:37 EXPRESS API
             getEventList();
@@ -80,11 +78,12 @@ export const CreateEntry = ({ sessionIsAdmin, sessionDisplayName }) => {
 
     const goToEditEntry = () => {
         //e.preventDefault(); cannot prevent default!!
-        console.log("ampm is " + ampm)
-        if (ampm == "am") {var am = true}
-        else if (ampm == "pm") {var am = false}
+        //console.log("ampm is " + ampm)
+        var am;
+        if (ampm == "am") {am = true}
+        else if (ampm == "pm") {am = false}
         else {setError("ampm value is invalid");return 1;}
-        console.log("data here is " + { id, doctor, clinic, date, am, weight})
+        //console.log("data here is " + { id, doctor, clinic, date, am, weight})
         //alert(id)
         if (id==undefined) { setId("CREATE_NEW_ENTRY")}
         if (weight==undefined || weight=="") { setWeight(1) }
@@ -96,7 +95,7 @@ export const CreateEntry = ({ sessionIsAdmin, sessionDisplayName }) => {
             am,
             weight
         }
-        console.log("new entry is " + JSON.stringify(newEntry))
+        //console.log("new entry is " + JSON.stringify(newEntry))
         onSubmitEdit(newEntry);
         return 0;
     }
@@ -105,7 +104,7 @@ export const CreateEntry = ({ sessionIsAdmin, sessionDisplayName }) => {
         //const { id } = req.params;
         //console.log(req.body)
         //const { regName, displayName, password } = req.body;
-        console.log("on submit edit")
+        //console.log("on submit edit")
 
         try {
             const response = await fetch(`/api/v1/event/${id}`, {
@@ -115,7 +114,7 @@ export const CreateEntry = ({ sessionIsAdmin, sessionDisplayName }) => {
             });
             getEventList();
             closeWindow();
-            console.log(response);
+            //console.log(response);
             //clearForm(); what is this????
         } catch (err) {
             console.error(err.message);
@@ -125,7 +124,7 @@ export const CreateEntry = ({ sessionIsAdmin, sessionDisplayName }) => {
     async function editEntry(id) {
         setId(id);
         setDoctor(entries[id]["doctor"]);
-        console.log(entries[id]["doctor"])
+        //console.log(entries[id]["doctor"])
         setClinic(entries[id]["clinic"]);
         setDate(entries[id]["date"].split("T")[0]);
         setWeight(entries[id]["weight"])
@@ -141,7 +140,7 @@ export const CreateEntry = ({ sessionIsAdmin, sessionDisplayName }) => {
                     method: "DELETE"
                 });
                 await getEventList();
-                console.log(deleteTodo);
+                //console.log(deleteTodo);
             } catch (err) {
                 console.error(err.message)
             }
@@ -162,8 +161,6 @@ export const CreateEntry = ({ sessionIsAdmin, sessionDisplayName }) => {
         try {
             const response = await fetch("/api/v1/doctorlist");
             const jsonData = await response.json();
-            //console.log(jsonData);
-            setDoctorTable(jsonData.rows);
             //console.log(titles);
             //console.log(entries);
             setDoctorList(getColNoRepeat(jsonData.rows, "doc_name"));
@@ -177,7 +174,6 @@ export const CreateEntry = ({ sessionIsAdmin, sessionDisplayName }) => {
             const response = await fetch("/api/v1/cliniclist");
             const jsonData = await response.json();
             //console.log(jsonData);
-            setClinicTable(jsonData.rows);
             //console.log(titles);
             //console.log("get clinic test list");
             //console.log(entries);
@@ -198,8 +194,8 @@ export const CreateEntry = ({ sessionIsAdmin, sessionDisplayName }) => {
     }
 
     useEffect(() => {
-        console.log("this is admin " +sessionIsAdmin);
-        console.log("this is display name " +sessionDisplayName)
+        //console.log("this is admin " +sessionIsAdmin);
+        //console.log("this is display name " +sessionDisplayName)
         getDoctorList();
         getClinicList();
         getEventList();
@@ -210,7 +206,7 @@ export const CreateEntry = ({ sessionIsAdmin, sessionDisplayName }) => {
     if (sessionIsAdmin === true) {
     return (
         <div>
-            {/* JSON.stringify(entries) */}{sessionIsAdmin}{sessionDisplayName}
+            {/* JSON.stringify(entries) */}{/*sessionIsAdmin}{sessionDisplayName*/}
             <form name="editForm" onSubmit={onSubmit}>
                 <div>
                     <div>
@@ -254,7 +250,7 @@ export const CreateEntry = ({ sessionIsAdmin, sessionDisplayName }) => {
                 {/*JSON.stringify(doctorList)*/}{/*JSON.stringify(clinicList)*/}{/*date*/}{/* ampm */}{/*error*/}<br />
                 </div>
             </form>
-
+            {error?error:""}
             
             <table>
                 <thead>

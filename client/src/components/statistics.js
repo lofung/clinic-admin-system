@@ -8,8 +8,8 @@ export const Statistics = () => {
     async function loadData () {
         let startMonth = document.getElementById("startMonthSelector").value;
         let endMonth = document.getElementById("endMonthSelector").value;
-        console.log(startMonth);
-        console.log(endMonth);
+        //console.log(startMonth);
+        //console.log(endMonth);
         try {
             const response = await fetch(`/api/v1/?start=${startMonth}&end=${endMonth}`);
             const answer = await response.json();

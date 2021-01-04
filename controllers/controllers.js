@@ -199,9 +199,9 @@ exports.addDoctor = async (req, res, next) => {
     bcrypt.genSalt(10, (err, salt) => 
             bcrypt.hash(password, salt, async (err, hash)=> {
                 if(err) throw err;
-                console.log(hash)
-                console.log("login ID is " + regName + "!! name is " + displayName + "!! hashpassword is " + hash + " admin is " + isAdmin)
-                console.log(hash.length)
+                //console.log(hash)
+                //console.log("login ID is " + regName + "!! name is " + displayName + "!! hashpassword is " + hash + " admin is " + isAdmin)
+                //console.log(hash.length)
                 try {
                     const newDoctor = await pool.query("INSERT INTO login_table (login_name, doc_name, password, is_Admin) VALUES ($1, $2, $3, $4)",
                     [regName, displayName, hash, isAdmin])
@@ -220,9 +220,9 @@ exports.addDoctor = async (req, res, next) => {
 
 exports.editDoctor = async (req, res, next) => {
     try {
-        console.log("HELLO WORLD edit doctor")
+        //console.log("HELLO WORLD edit doctor")
         const { id } = req.params;
-        console.log(req.body)
+        //console.log(req.body)
         const { regName, displayName, password } = req.body;        
         const deleteClinic = await pool.query("UPDATE login_table SET (login_name, doc_name, password) = ($2, $3, $4) WHERE login_id=$1", [ id, regName, displayName, password ])
         return res.status(201).json({
@@ -291,7 +291,7 @@ exports.editClinic = async (req, res, next) => {
     try {
         //console.log("HELLO WORLD")
         const { id } = req.params;
-        console.log(req.body)
+        //console.log(req.body)
         const { editId, clinicName, ampm, weekday } = req.body;        
         const deleteClinic = await pool.query("UPDATE clinic_source_table SET (clinic_name, am, date) = ($2, $3, $4) WHERE clinic_id=$1", [ editId, clinicName, ampm, weekday ])
         return res.status(201).json({

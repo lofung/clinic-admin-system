@@ -19,7 +19,9 @@ function App() {
   const fetchLoginData = async () => {
     try {
        const loginData = await (await fetch("http://localhost:5000/authDetails")).json()
-       console.log("login data is " + JSON.stringify(loginData))
+       //console.log("login data is " + JSON.stringify(loginData))
+       setUserName(loginData.doc_name)
+       setIsAdmin(loginData.is_admin)
     } catch (err) {
       console.error(err)
     }

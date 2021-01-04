@@ -1,4 +1,4 @@
-import React, {useState, useEffect, Component} from 'react'
+import React, {useState, useEffect} from 'react'
 
 export const ClinicList = ({ sessionIsAdmin, sessionDisplayName }) => {
     const [editId, setEditId] = useState("");
@@ -20,8 +20,8 @@ export const ClinicList = ({ sessionIsAdmin, sessionDisplayName }) => {
             setTitles(jsonData.fields);
             setEntries(jsonData.rows);
             //console.log(titles);
-            console.log("get clinic test list");
-            console.log(entries);
+            //console.log("get clinic test list");
+            //console.log(entries);
         } catch (err) {
             console.error(err.message);
         }
@@ -42,23 +42,8 @@ export const ClinicList = ({ sessionIsAdmin, sessionDisplayName }) => {
     
     useEffect(getClinicList, []);
 
-    const editClinic = async (idx) => {
-        setEditId(entries[idx]["clinic_id"]);
-        setClinicName(entries[idx]["clinic_name"]);
-        setPrevClinicName(entries[idx]["clinic_name"]);
-        setAmpm(entries[idx]["am"]);
-        setPrevAmpm(entries[idx]["am"]);
-        setWeekday(entries[idx]["date"]);
-        setPrevWeekday(entries[idx]["date"]);
-        if (entries[idx]["am"]===true) {
-            document.getElementById('buttonAM').checked = "checked";
-        } else {
-            document.getElementById('buttonPM').checked = "checked";
-        }
-    }
-
     const onSubmit = async (e) => {
-        console.log("ampm is " + ampm)
+        //console.log("ampm is " + ampm)
         e.preventDefault();
         if (editId!==""){
             onSubmitEdit(e);
@@ -71,7 +56,7 @@ export const ClinicList = ({ sessionIsAdmin, sessionDisplayName }) => {
                 body: JSON.stringify({ clinicName, ampm, weekday })
             });
             await getClinicList();
-            console.log(response);
+            //console.log(response);
             clearForm();
         } catch (err) {
             console.error(err.message);
@@ -80,8 +65,8 @@ export const ClinicList = ({ sessionIsAdmin, sessionDisplayName }) => {
 
     const onSubmitEdit = async (e) => {
         e.preventDefault();
-        console.log("on submit edit")
-        console.log("ampm is " + ampm)
+        //console.log("on submit edit")
+        //console.log("ampm is " + ampm)
         try {
             const response = await fetch(`/api/v1/cliniclist/${editId}`, {
                 method: "PUT",
@@ -89,7 +74,7 @@ export const ClinicList = ({ sessionIsAdmin, sessionDisplayName }) => {
                 body: JSON.stringify({ editId, clinicName, ampm, weekday })
             });
             await getClinicList();
-            console.log(response);
+            //console.log(response);
             clearForm();
         } catch (err) {
             console.error(err.message);
@@ -104,7 +89,7 @@ export const ClinicList = ({ sessionIsAdmin, sessionDisplayName }) => {
                     method: "DELETE"
                 });
                 await getClinicList();
-                console.log(deleteTodo);
+                //console.log(deleteTodo);
             } catch (err) {
                 console.error(err.message)
             }

@@ -25,7 +25,7 @@ export const DisplayTimeTable = ({sessionIsAdmin, sessionDisplayName}) => {
     }
 
     function onDrop(obj) {
-        console.log("dropping in " + obj.am + " " + obj.date)
+        //console.log("dropping in " + obj.am + " " + obj.date)
         let tempObj = Object.assign({}, tempData);
         tempObj.am = obj.am
         tempObj.date = obj.date
@@ -38,6 +38,26 @@ export const DisplayTimeTable = ({sessionIsAdmin, sessionDisplayName}) => {
     async function deleteEntry (id) {
         //get id from the object, and then delete things from it
         console.log("we are deleting this entry! " + id);
+        if (window.confirm("Are you sure you want to delete?")){
+            //ask before delete
+            try {
+                const deleteTodo = await fetch (`/api/v1/event/${id}`,{
+                    method: "DELETE"
+                });
+                changeMonth({
+                    target:{
+                        value: document.getElementById('monthSelector').value
+                        //forcing the current date into object even when target is not here
+                        //bad pracitse, but deal with it!!
+                        //if you call changeMonth must add this line,
+                        //or otherwise you can copy below in modal
+                    }
+                });
+                //console.log(deleteTodo);
+            } catch (err) {
+                console.error(err.message)
+            }
+        }
     }
 
     
@@ -52,7 +72,7 @@ export const DisplayTimeTable = ({sessionIsAdmin, sessionDisplayName}) => {
         //console.log("we are editing this entry! " + JSON.stringify(obj));
         if (obj.id === undefined){
             obj.event_id = "CREATE_NEW_ENTRY";
-            console.log("creating entry because no id!!!")
+            //console.log("creating entry because no id!!!")
             if (obj.clinic === undefined){
                 obj.clinic = ""
             }

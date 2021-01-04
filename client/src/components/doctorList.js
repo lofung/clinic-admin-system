@@ -1,4 +1,4 @@
-import React, {useState, useEffect, Component} from 'react'
+import React, {useState, useEffect} from 'react'
 
 export const DoctorList = ({ sessionIsAdmin, sessionDisplayName }) => {
     const [editId, setEditId] = useState("");
@@ -51,7 +51,7 @@ export const DoctorList = ({ sessionIsAdmin, sessionDisplayName }) => {
                 body: JSON.stringify({ regName, displayName, password, isAdmin })
             });
             await getDoctorList();
-            console.log(response);
+            //console.log(response);
         } catch (err) {
             console.error(err.message);
         }
@@ -72,15 +72,6 @@ export const DoctorList = ({ sessionIsAdmin, sessionDisplayName }) => {
         }
     }
 
-    const editDoctor = (idx) => {
-        setEditId(entries[idx]["login_id"]);
-        setRegName(entries[idx]["login_name"]);
-        setDisplayName(entries[idx]["doc_name"]);
-        setPassword(entries[idx]["password"]);
-        setPrevRegName(entries[idx]["login_name"]);
-        setPrevDisplayName(entries[idx]["doc_name"]);
-    }
-
     const submitEditDoctor = async (id) => {
         console.log("hello world")
         try {
@@ -90,7 +81,7 @@ export const DoctorList = ({ sessionIsAdmin, sessionDisplayName }) => {
                 body: JSON.stringify({ regName, displayName, password })
             });
             await getDoctorList();
-            console.log(response);
+            //console.log(response);
             clearForm();
         } catch (err) {
             console.error(err.message);

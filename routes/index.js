@@ -15,7 +15,7 @@ if (process.env.NODE_ENV === "production") {
 // dashboard
 router.get('/dashboard', ensureAuthenticated, (req, res) => 
     {
-        console.log(req.user);
+        //console.log(req.user);
         res.render('dashboard', {
             name: req.user.doc_name
         })}

@@ -48,7 +48,7 @@ export default function Modal({ open, data, onClose }) {
             column.push(matrix[i][col])
         }
         //flattern array
-        column = [... new Set(column)];
+        column = [...new Set(column)];
         column = column.filter(function (el) {
             return el != "";
         })
@@ -58,11 +58,12 @@ export default function Modal({ open, data, onClose }) {
 
     const onSubmit = (e) => {
         //e.preventDefault(); cannot prevent default!!
-        console.log("ampm is " + ampm)
-        if (ampm == "am") {var am = true}
-        else if (ampm == "pm") {var am = false}
+        //console.log("ampm is " + ampm)
+        var am;
+        if (ampm == "am") {am = true}
+        else if (ampm == "pm") {am = false}
         else {setError("ampm value is invalid");return 1;}
-        console.log("data here is " + { "id": data.entry_id, doctor, clinic, date, am, weight})
+        //console.log("data here is " + { "id": data.entry_id, doctor, clinic, date, am, weight})
         //alert(id)
         if (id==undefined) { setId("CREATE_NEW_ENTRY")}
         if (weight==undefined || weight=="") { setWeight(1) }
@@ -74,7 +75,7 @@ export default function Modal({ open, data, onClose }) {
             am,
             weight
         }
-        console.log("new entry is " + JSON.stringify(newEntry))
+        //console.log("new entry is " + JSON.stringify(newEntry))
         onSubmitEdit(newEntry);
         return 0;
     }
@@ -83,7 +84,7 @@ export default function Modal({ open, data, onClose }) {
         //const { id } = req.params;
         //console.log(req.body)
         //const { regName, displayName, password } = req.body;
-        console.log("on submit edit")
+        //console.log("on submit edit")
 
         try {
             const response = await fetch(`/api/v1/event/${data.event_id}`, {
@@ -92,7 +93,7 @@ export default function Modal({ open, data, onClose }) {
                 body: JSON.stringify(entry)
             });
             closeWindow();
-            console.log(response);
+            //console.log(response);
             //clearForm(); what is this????
         } catch (err) {
             console.error(err.message);
@@ -116,7 +117,7 @@ export default function Modal({ open, data, onClose }) {
         //get possible doctor and clinic list
         getDoctorList();
         getClinicList();
-        console.log(data)
+        //console.log(data)
         setDoctor(data.doctor)
         //if(data.doctor) {document.getElementById("doctorSelect").value = data.doctor};
         setClinic(data.clinic)

@@ -5,7 +5,7 @@ export default class Navbar extends Component {
 
 
   render() {
-    console.log(this.props)
+    //console.log(this.props)
     return (
       <nav className="navbar navbar-dark bg-dark navbar-expand-lg">
         <Link to="/" className="navbar-brand">Timetable Manager</Link>
