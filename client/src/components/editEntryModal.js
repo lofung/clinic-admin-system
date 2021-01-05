@@ -56,7 +56,7 @@ export default function Modal({ open, data, onClose }) {
         //return unique values
     }
 
-    const onSubmit = (e) => {
+    const onSubmit = () => {
         //e.preventDefault(); cannot prevent default!!
         //console.log("ampm is " + ampm)
         var am;
@@ -138,7 +138,7 @@ export default function Modal({ open, data, onClose }) {
             <>
                 <div className="overlay" />
                 <div className="formStyle">
-                    {JSON.stringify(data)}
+                    {/* JSON.stringify(data)*/}
                     <form name="editForm" onSubmit={onSubmit}>
                         <div>
                             <label>Entry ID　</label>

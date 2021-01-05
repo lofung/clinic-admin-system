@@ -59,7 +59,7 @@ export const Statistics = () => {
             <br />
             <div>This tab is for discussion purposes. Since doctors care very much about a fair workload and who gets what leaves during holidays.</div>
             <div>You may hover cursor on the respective number box for a detail breakdown of the numbers, "so that no one did their data input wrong!"</div>
-            <div>Hover the dates on the two sides of the screen for dates inclusive</div>
+            <div>Change the dates on the two sides of the screen for dates inclusive</div>
             <table id="statTable">
                 <thead>
                     <tr>
