@@ -1,7 +1,7 @@
 The system is available to be viewed at production in<br/>
 https://time-table-scorer1.herokuapp.com/
 <br/>
-##**Business Requirements**<br/>
+##**Business Requirements<br/>
 
 roughtly<br/>
 (1) Able to change clinical entries quickly, as doctors also take last-minute annual leaves or have family issues to deal with<br/>
@@ -18,4 +18,4 @@ roughtly<br/>
 (11) There could be multiple doctors with different workloads working in the same clinic<br/>
 (12) Must show the overall workload in different length of periods, from season-long to year-long.
 
-##Potential "fixes" and features that didn't make it (as of January 2021)
+##Potential "fixes" and features that didn't make it (as of January 2021)##
