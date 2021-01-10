@@ -20,10 +20,10 @@ roughtly<br/>
 
 ## Potential "fixes" and features that didn't make it (as of January 2021)
 
-(1) Ability to mass input for new seasons using keyboard only (300 lines of clinic inputs for every new season)
-(2) Immediately recognize clinics and doctor matches with word bubbles popups when mass inputing such that there would not be input mistakes.
-(3) Limit choices on dates based on the weekdays selected in the clinic table such that there would not be input mistakes.
-(4) Two doctors completely swapping different times/clinic by dragging entries into each other.
-
-(5) Counting ward duties and other daily duties during weekens and holidays
-(6) Leave counting and data presentation, particularly during seaons like CNY, Christmas, Easter and summer.
+(1) Ability to mass input for new seasons using keyboard only (300 lines of clinic inputs for every new season)<br/>
+(2) Immediately recognize clinics and doctor matches with word bubbles popups when mass inputing such that there would not be input mistakes.<br/>
+(3) Limit choices on dates based on the weekdays selected in the clinic table such that there would not be input mistakes.<br/>
+(4) Two doctors completely swapping different times/clinic by dragging entries into each other.<br/>
+<br/>
+(5) Counting ward duties and other daily duties during weekens and holidays<br/>
+(6) Leave counting and data presentation, particularly during seaons like CNY, Christmas, Easter and summer.<br/>
