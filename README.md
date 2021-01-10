@@ -17,6 +17,7 @@ roughtly<br/>
 (10) There could be multiple clinics on the same half-day<br/>
 (11) There could be multiple doctors with different workloads working in the same clinic<br/>
 (12) Must show the overall workload in different length of periods, from season-long to year-long.
+(13) New doctors or new clinics would show up and be removed, must be able to change.
 
 ## Potential "fixes" and features that didn't make it (as of January 2021)
 
