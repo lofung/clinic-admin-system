@@ -6,7 +6,9 @@ const path = require('path');
 
 // welcome page
 if (process.env.NODE_ENV === "production") {
-    router.get('/', ensureAuthenticated, (req, res) => res.sendFile(path.resolve(__dirname, "..", "client", "build", "index.html"), {
+    router.get('/', 
+        ensureAuthenticated, 
+        (req, res) => res.sendFile(path.resolve(__dirname, "..", "client", "build", "index.html"), {
         displayName: req.user.doc_name
     }));
 }

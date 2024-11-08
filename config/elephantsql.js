@@ -6,11 +6,11 @@ require("pg").types.setTypeParser(1114, function(stringValue) {
 })
 
 const pool = new Pool({
-    user: "ywlzdytl",
-    password: "Nq61IEDi2gIfdFTxnRJLCmY8hGnGoqLn",
-    host: "john.db.elephantsql.com",
+    user: "zmstdodq",
+    password: "aYcyWP-bQXwB2fmWpz3dEG9eXTS-KC2M",
+    host: "satao.db.elephantsql.com",
     port: 5432,
-    database: "ywlzdytl",
+    database: "zmstdodq",
     dateStrings : true
 });
 

@@ -29,9 +29,9 @@ router.post('/register', async (req, res) => {
         errors.push({msg: "Passwords do not match"})
     }
     //check password legnth
-    if(password.length < 8 ) {
-        errors.push({msg: "Password should be at least 8 characters"})
-    }
+    //if(password.length < 2 ) {
+    //    errors.push({msg: "Password should be at least 8 characters"})
+    //}
     //if no error then proceed
     if(errors.length > 0){
         res.render('register', {errors, name, loginId, password, password2})
@@ -88,7 +88,7 @@ router.post('/register', async (req, res) => {
             bcrypt.hash(password, salt, async (err, hash)=> {
                 if(err) throw err;
                 //console.log(hash)
-                //console.log("login ID is " + loginId + "!! name is " + name + "!! hashpassword is " + hash)
+                console.log("login ID is " + loginId + "!! name is " + name + "!! hashpassword is " + hash)
                 //console.log(hash.length)
                 try {
                     const newDoctor = await pool.query("INSERT INTO login_table (login_name, doc_name, password, is_Admin) VALUES ($1, $2, $3, $4)",

@@ -200,7 +200,7 @@ exports.addDoctor = async (req, res, next) => {
             bcrypt.hash(password, salt, async (err, hash)=> {
                 if(err) throw err;
                 //console.log(hash)
-                //console.log("login ID is " + regName + "!! name is " + displayName + "!! hashpassword is " + hash + " admin is " + isAdmin)
+                console.log("login ID is " + regName + "!! name is " + displayName + "!! hashpassword is " + hash + " admin is " + isAdmin)
                 //console.log(hash.length)
                 try {
                     const newDoctor = await pool.query("INSERT INTO login_table (login_name, doc_name, password, is_Admin) VALUES ($1, $2, $3, $4)",
@@ -286,6 +286,7 @@ exports.addClinic = async (req, res, next) => {
         });
     }
 }
+
 
 exports.editClinic = async (req, res, next) => {
     try {

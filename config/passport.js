@@ -6,6 +6,7 @@ module.exports = function (passport) {
     passport.use(
         new LocalStrategy({ usernameField: 'loginId'}, async (loginId, password, done) => {
             //Match user
+
             try {
                 const doctorList = await pool.query("SELECT * FROM login_table WHERE login_name=$1", [loginId]);
                 //console.log(doctorList);
