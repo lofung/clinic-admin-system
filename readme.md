@@ -1,5 +1,5 @@
 The system is available to be viewed at production in<br/>
-https://time-table-scorer1.herokuapp.com/
+https://clinic-admin-system-test-lych.onrender.com/
 <br/>
 ## Business Requirements<br/>
 
