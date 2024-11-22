@@ -1,5 +1,6 @@
 const EntrySchema = require('../models/entries');
-const pool = require("../config/elephantsql");
+//const pool = require("../config/elephantsql");
+const pool = require("../config/tembosql");
 const bcrypt = require("bcryptjs");
 
 //@DESC     Get all entries
@@ -37,10 +38,10 @@ exports.getEntries = async (req, res, next) => {
         //console.log({ start, end, query });
         if (start && end) {
             //console.log("triggered to run start && end")
-            result = await pool.query("SELECT *, date::text FROM clinic_time_table WHERE date BETWEEN $1 AND $2", [start.toString(), end.toString()]);
+            result = await pool.query("SELECT *, date::text FROM public.clinic_time_table WHERE date BETWEEN $1 AND $2", [start.toString(), end.toString()]);
         } else {
             //console.log("full query")
-            result = await pool.query("SELECT * FROM clinic_time_table");
+            result = await pool.query("SELECT * FROM public.clinic_time_table");
         }
         //console.log(result.rows);
         res.json(result);
@@ -61,7 +62,7 @@ exports.addEntry = async (req, res, next) => {
         console.log(req.body)
         const { doctor, clinic, date, am } = req.body;
         const weight = 1;
-        const entry = await pool.query("INSERT INTO clinic_time_table (clinic, doctor, am, date, weight) VALUES ($1, $2, $3, $4, $5)",
+        const entry = await pool.query("INSERT INTO public.clinic_time_table (clinic, doctor, am, date, weight) VALUES ($1, $2, $3, $4, $5)",
         [clinic, doctor, am, date, weight]);
     
         return res.status(201).json({
@@ -85,6 +86,17 @@ exports.addEntry = async (req, res, next) => {
 
 }
 
+exports.checkConnection = async (req, res, next) => {
+    await pool.connect()
+    .then(() => {
+		console.log('Connected to PostgreSQL database');
+	})
+	.catch((err) => {
+		console.error('Error connecting to PostgreSQL database', err);
+	})
+
+}
+
 exports.editEntry = async (req, res, next) => {
     //const response = await fetch(`/event/${data.event_id}`, {
     //body: JSON.stringify({ "id": data.entry_id, doctor, clinic, date, am, weight })
@@ -95,7 +107,7 @@ exports.editEntry = async (req, res, next) => {
         console.log("ID is create new entry, now create new entry");
         try {
             console.log("new entry is created")
-            const entry = await pool.query("INSERT INTO clinic_time_table (clinic, doctor, am, date, weight) VALUES ($1, $2, $3, $4, $5)",
+            const entry = await pool.query("INSERT INTO public.clinic_time_table (clinic, doctor, am, date, weight) VALUES ($1, $2, $3, $4, $5)",
             [clinic, doctor, am, date, weight]);
         
             return res.status(201).json({
@@ -121,7 +133,7 @@ exports.editEntry = async (req, res, next) => {
             console.log("new entry is updated")
             console.log(req.body)
             const { id, doctor, clinic, date, am, weight } = req.body;
-            const entry = await pool.query("UPDATE clinic_time_table SET (clinic, doctor, am, date, weight) = ($1, $2, $3, $4, $5) WHERE (event_id) = ($6)",
+            const entry = await pool.query("UPDATE public.clinic_time_table SET (clinic, doctor, am, date, weight) = ($1, $2, $3, $4, $5) WHERE (event_id) = ($6)",
             [clinic, doctor, am, date, weight, id]);
             //id is at the END!!!!!!!! care!!!!!!!!
         
@@ -152,7 +164,7 @@ exports.editEntry = async (req, res, next) => {
 
 exports.deleteEntry = async (req, res, next) => {
     try {
-        const entry = await pool.query("DELETE FROM clinic_time_table WHERE event_id = $1", [ req.params.id ]);
+        const entry = await pool.query("DELETE FROM public.clinic_time_table WHERE event_id = $1", [ req.params.id ]);
 
         if (!entry) {
             return res.status(404).json({
@@ -180,7 +192,7 @@ exports.deleteEntry = async (req, res, next) => {
 
 exports.getDoctorList = async (req, res, next) => {
     try {
-        const doctorList = await pool.query("SELECT * FROM login_table");
+        const doctorList = await pool.query("SELECT * FROM public.login_table");
         //console.log(doctorList)
         res.json(doctorList);
     } catch (err) {
@@ -203,7 +215,7 @@ exports.addDoctor = async (req, res, next) => {
                 console.log("login ID is " + regName + "!! name is " + displayName + "!! hashpassword is " + hash + " admin is " + isAdmin)
                 //console.log(hash.length)
                 try {
-                    const newDoctor = await pool.query("INSERT INTO login_table (login_name, doc_name, password, is_Admin) VALUES ($1, $2, $3, $4)",
+                    const newDoctor = await pool.query("INSERT INTO public.login_table (login_name, doc_name, password, is_Admin) VALUES ($1, $2, $3, $4)",
                     [regName, displayName, hash, isAdmin])
                     return res.status(201).json({
                         success: true,
@@ -224,7 +236,7 @@ exports.editDoctor = async (req, res, next) => {
         const { id } = req.params;
         //console.log(req.body)
         const { regName, displayName, password } = req.body;        
-        const deleteClinic = await pool.query("UPDATE login_table SET (login_name, doc_name, password) = ($2, $3, $4) WHERE login_id=$1", [ id, regName, displayName, password ])
+        const deleteClinic = await pool.query("UPDATE public.login_table SET (login_name, doc_name, password) = ($2, $3, $4) WHERE login_id=$1", [ id, regName, displayName, password ])
         return res.status(201).json({
             success: true,
             message: { id, regName, displayName, password }
@@ -240,7 +252,7 @@ exports.editDoctor = async (req, res, next) => {
 exports.deleteDoctor = async (req, res, next) => {
     try {
         const { id } = req.params;
-        const deleteDoctor = await pool.query("DELETE FROM login_table WHERE login_id = $1", [ id ])
+        const deleteDoctor = await pool.query("DELETE FROM public.login_table WHERE login_id = $1", [ id ])
         return res.status(201).json({
             success: true,
             message: {id}
@@ -259,7 +271,7 @@ exports.deleteDoctor = async (req, res, next) => {
 
 exports.getClinicList = async (req, res, next) => {
     try {
-        const clinicList = await pool.query("SELECT * FROM clinic_source_table");
+        const clinicList = await pool.query("SELECT * FROM public.clinic_source_table");
         res.json(clinicList);
     } catch (err) {
         return res.status(500).json({
@@ -273,7 +285,7 @@ exports.addClinic = async (req, res, next) => {
     try {
         //console.log("HELLO WORLD");
         const { clinicName, ampm, weekday } = req.body;
-        const newClinic = await pool.query("INSERT INTO clinic_source_table (clinic_name, am, date) VALUES ($1, $2, $3)",
+        const newClinic = await pool.query("INSERT INTO public.clinic_source_table (clinic_name, am, date) VALUES ($1, $2, $3)",
         [clinicName, ampm, weekday])
         return res.status(201).json({
             success: true,
@@ -294,7 +306,7 @@ exports.editClinic = async (req, res, next) => {
         const { id } = req.params;
         //console.log(req.body)
         const { editId, clinicName, ampm, weekday } = req.body;        
-        const deleteClinic = await pool.query("UPDATE clinic_source_table SET (clinic_name, am, date) = ($2, $3, $4) WHERE clinic_id=$1", [ editId, clinicName, ampm, weekday ])
+        const deleteClinic = await pool.query("UPDATE public.clinic_source_table SET (clinic_name, am, date) = ($2, $3, $4) WHERE clinic_id=$1", [ editId, clinicName, ampm, weekday ])
         return res.status(201).json({
             success: true,
             message: { editId, clinicName, ampm, weekday }
@@ -311,7 +323,7 @@ exports.deleteClinic = async (req, res, next) => {
     try {
         //console.log("HELLO WORLD")
         const { id } = req.params;        
-        const deleteClinic = await pool.query("DELETE FROM clinic_source_table WHERE clinic_id = $1", [ id ])
+        const deleteClinic = await pool.query("DELETE FROM public.clinic_source_table WHERE clinic_id = $1", [ id ])
         return res.status(201).json({
             success: true,
             message: {id}

@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const pool = require("../config/elephantsql");
+const pool = require("../config/tembosql");
 const bcrypt = require("bcryptjs");
 const passport = require('passport');
 const { ensureNotAuthenticated } = require('../config/auth');
@@ -40,7 +40,7 @@ router.post('/register', async (req, res) => {
         //console.log("into validation")
         // validation passed
         try {
-            const doctorList = await pool.query("SELECT * FROM login_table");
+            const doctorList = await pool.query("SELECT * FROM public.login_table");
             var result = await doctorList["rows"]
             if (result.length === 0) {
                 errors.push({ msg: "Please try pushing register again" });
@@ -91,7 +91,7 @@ router.post('/register', async (req, res) => {
                 console.log("login ID is " + loginId + "!! name is " + name + "!! hashpassword is " + hash)
                 //console.log(hash.length)
                 try {
-                    const newDoctor = await pool.query("INSERT INTO login_table (login_name, doc_name, password, is_Admin) VALUES ($1, $2, $3, $4)",
+                    const newDoctor = await pool.query("INSERT INTO public.login_table (login_name, doc_name, password, is_Admin) VALUES ($1, $2, $3, $4)",
                     [loginId, name, hash, isAdmin])
                     req.flash('success_msg', "You are now registered and can log in")
                     return res.redirect('/auth/login')

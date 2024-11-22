@@ -3,7 +3,8 @@ const dotenv = require('dotenv');
 const colors = require('colors');
 const morgan = require('morgan');
 const connectDB = require('./config/db');
-const pool = require('./config/elephantsql')
+const pool = require('./config/tembosql')
+//const pool = require('./config/elephantsql')
 const expressLayouts = require('express-ejs-layouts');
 //const client = require('./config/elephantsql'); 
 //elephantSQL test, seems not needed
@@ -22,7 +23,9 @@ dotenv.config({ path: './config/config.env' });
 
 const routes = require('./routes/routes');
 const users = require('./routes/users');
-const client = require('./config/elephantsql');
+//const client = require('./config/elephantsql');
+const client = require('./config/tembosql');
+
 
 const app = express();
 
