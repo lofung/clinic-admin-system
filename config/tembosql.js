@@ -7,8 +7,8 @@ require("pg").types.setTypeParser(1114, function(stringValue) {
 
 const pool = new Pool({
     user: "postgres",
-    password: "lH53WKzxAztlfHyt",
-    host: "inertly-adored-tortoise.data-1.use1.tembo.io",
+    password: "z0h3T0WC84KLoN0I",
+    host: "tonelessly-contiguous-terrapin.data-1.use1.tembo.io",
     port: 5432,
     database: "postgres",
     dateStrings : true,
